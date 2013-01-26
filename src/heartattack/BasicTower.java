@@ -63,7 +63,6 @@ public class BasicTower extends Tower {
     @Override
     public void fire()
     {
-        System.out.println(activeBullets.size());
         if (System.currentTimeMillis() - lastFire > fireRate)
         {
             Bullet temp = bulletQue.poll();
@@ -75,8 +74,6 @@ public class BasicTower extends Tower {
                 
                 lastFire = System.currentTimeMillis();
             }
-            System.out.println(System.currentTimeMillis());
-            System.out.println(lastFire);
         }
     }
     

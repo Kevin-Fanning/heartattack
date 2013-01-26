@@ -65,6 +65,13 @@ public class Vector2 {
         return x*other.x + y*other.y;
     }
     
+    //Returns the square of the distance between to vectors
+    public float getSquareDistance(Vector2 other)
+    {
+        return (this.x - other.x)*(this.x - other.x) +
+                (this.y - other.y)*(this.y-other.y);
+    }
+    
     //Returns the vector in radians from (1,0)
     public float toDegrees()
     {
