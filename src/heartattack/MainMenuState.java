@@ -26,12 +26,13 @@ public class MainMenuState extends BasicGameState {
         stateID = id;
         
         newEnemy = new Enemy();
-        newEnemy.setVelocity(new Vector2(50.0f,1.0f));
+        newEnemy.setPosition(new Vector2(0.0f, 200.0f));
+        newEnemy.setVelocity(new Vector2(50.0f,0.0f));
         
         tower = new BasicTower();
         tower.position = new Vector2(400,300);
         
-        font = new TrueTypeFont(new Font("Arial Bold", Font.PLAIN, 12), true);
+        font = new TrueTypeFont(new Font("Arial", Font.PLAIN, 12), true);
     }
     
     @Override
