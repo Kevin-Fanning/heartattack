@@ -16,6 +16,13 @@ public abstract class Tower extends Sprite{
     protected int damage;     //The damage to apply on a hit
     
     protected boolean enabled;
+    protected enum states 
+    {
+        PLACING,
+        ACTIVE
+    }
+    
+    protected states currentState;
     
     public Tower()
     {
@@ -23,13 +30,12 @@ public abstract class Tower extends Sprite{
         fireRate = 0;
         damage = 0;
         enabled = false;
+        currentState = states.PLACING;
     }
     
     //what do when you place it
     public abstract void place();
     
-    //holding it before it's placed
-    public abstract void hover();
     
     //aim at the closest baddie
     public abstract void aim(LinkedList<Enemy> enemyList);

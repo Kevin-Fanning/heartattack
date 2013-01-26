@@ -1,13 +1,10 @@
 
 package heartattack;
 
-import java.awt.Font;
 import java.util.Iterator;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.TrueTypeFont;
-import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.*;
 import java.util.LinkedList;
 import org.newdawn.slick.Image;
@@ -22,9 +19,7 @@ public class MainGameState extends BasicGameState{
     private EnemyWave enemyWave;
     private LinkedList<Tower> towerList;
     
-    
-    private TextField tf;
-    private TrueTypeFont font;
+    private Player player;
     
     private Image background;
     
@@ -37,42 +32,48 @@ public class MainGameState extends BasicGameState{
         
         enemyWave = new EnemyWave();
         
-        BasicTower tower = new BasicTower();
-        tower.position = new Vector2(300,150);
-        towerList.add(tower);
-        BasicTower tower2 = new BasicTower();
-        tower2.position = new Vector2(250, 150);
-        towerList.add(tower2);
-        BasicTower tower3 = new BasicTower();
-        tower3.position = new Vector2(350, 150);
-        towerList.add(tower3);
-        font = new TrueTypeFont(new Font("Arial Bold", Font.PLAIN, 12), true);
+        player = new Player();
     }
     
+    //Required for Slick2D. ignore it
     @Override
     public int getID() {
         return stateID;
     }
     
+    //Initialize values for everything
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
     {
         background = new Image("level1.png");
-        
-        tf = new TextField(gc, font, 50,50, 100, 30);
-        tf.setTextColor(Color.white);
-        tf.setBackgroundColor(Color.gray);
+
         enemyWave.init();
         
         for (Tower i: towerList){
             i.init2("turret.png","base.png");
         }
+        
+        player.init();
     }
     
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta)
     {
         InputController.update(gc.getInput());
+        //Place a tower on click
+        if (InputController.input.isMousePressed(0))
+        {
+            BasicTower t = new BasicTower();
+            try {
+                t.init2("turret.png","base.png");
+            }catch (SlickException e)
+            { 
+                System.out.println(e.getMessage());
+            }
+            t.position.x = InputController.input.getMouseX();
+            t.position.y = InputController.input.getMouseY();
+            towerList.add(t);
+        }
 
         enemyWave.update(delta);
         
@@ -101,7 +102,7 @@ public class MainGameState extends BasicGameState{
                 }
             }
         }
-        
+        player.update(delta);
     }
     
     @Override
@@ -115,7 +116,7 @@ public class MainGameState extends BasicGameState{
             i.render(g);
         }
         
-        //tf.render(gc, g);
+        player.render(g);
     }   
     
     @Override

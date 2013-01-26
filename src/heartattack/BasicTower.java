@@ -5,6 +5,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import java.util.ArrayDeque;
 import java.util.LinkedList;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 /**
  *
@@ -20,6 +21,8 @@ public class BasicTower extends Tower {
     protected final static float fireSpeed = 300;
     protected ArrayDeque<Bullet> bulletQue;
     protected ArrayDeque<Bullet> activeBullets;
+    
+    
     
     public BasicTower()
     {
@@ -49,12 +52,6 @@ public class BasicTower extends Tower {
         enabled = true;
     }
     
-    //holding it before it's placed
-    @Override
-    public void hover()
-    {
-        //TODO: transparent while hovered. Colored red if impossible
-    }
     
     @Override
     public void reacquire(LinkedList<Enemy> enemyList)
@@ -108,7 +105,7 @@ public class BasicTower extends Tower {
     @Override
     public void fire()
     {
-        if (enabled && System.currentTimeMillis() - lastFire > fireRate)
+        if (enabled && System.currentTimeMillis() - lastFire > fireRate && aimDirection != new Vector2(1.0f,0.0f))
         {
             Bullet temp = bulletQue.poll();
             if (temp != null) {
@@ -146,27 +143,40 @@ public class BasicTower extends Tower {
     @Override
     public void update(int delta)
     {
-        for (Bullet i : activeBullets) 
+        if (currentState == states.ACTIVE)
         {
-            i.update(delta);
-            if (i.position.x < 0 || i.position.x > 800 || i.position.y > 600 || i.position.y < 0)
+            for (Bullet i : activeBullets) 
             {
-                bulletQue.add(i);
-                activeBullets.remove(i);
+                i.update(delta);
+                if (i.position.x < 0 || i.position.x > 800 || i.position.y > 600 || i.position.y < 0)
+                {
+                    bulletQue.add(i);
+                    activeBullets.remove(i);
+                }
             }
+        } else if (currentState == states.PLACING)
+        {
+            position = InputController.msPosition;
         }
     }
     
     @Override
     public void render(Graphics g)
     {
-        super.render(g);
-        turret.draw((int)position.x, (int)position.y);
-        for (Bullet i : activeBullets) 
+        if (currentState == states.ACTIVE)
+            {
+            super.render(g);
+            turret.draw((int)position.x, (int)position.y);
+            for (Bullet i : activeBullets) 
+            {
+                i.render(g);
+            }
+        } else if (currentState == states.PLACING)
         {
-            i.render(g);
+            texture.draw((int)position.x, (int)position.y, new Color(255,255,255,127));
+            turret.draw((int)position.x, (int)position.y, new Color(255,255,255,127));
         }
-        g.drawOval(position.x-range + width/2, position.y-range + height/2, range*2, range*2);
+        //g.drawOval(position.x-range + width/2, position.y-range + height/2, range*2, range*2);
     }
     
     //return an arrayque of the active bullets
