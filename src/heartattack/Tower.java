@@ -1,7 +1,9 @@
 
 package heartattack;
 
+import java.util.ArrayDeque;
 import java.util.LinkedList;
+import org.newdawn.slick.SlickException;
 
 /**
  *
@@ -9,9 +11,9 @@ import java.util.LinkedList;
  */
 //TODO: Everything
 public abstract class Tower extends Sprite{
-    protected float range;
-    protected float fireRate;
-    protected float damage;
+    protected float range;      //How far the tower can shoot
+    protected float fireRate;   //How fast the tower fires
+    protected float damage;     //The damage to apply on a hit
     
     protected boolean enabled;
     
@@ -37,4 +39,14 @@ public abstract class Tower extends Sprite{
     
     //Get rid of the tower
     public abstract void sell();
+    
+    //Initialize the tower with 2 images. a turret and a base
+    //init(String) is for one picture towers
+    public abstract void init2(String turretPath, String basePath) throws SlickException;
+
+    //Use this to grab bullets for collision detection
+    public abstract ArrayDeque<Bullet> getBullets();
+    
+    //Use this to remove a bullet from the active que on a collision
+    public abstract void removeBullet(Bullet b);
 }

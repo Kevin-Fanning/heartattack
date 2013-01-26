@@ -58,8 +58,27 @@ public class Enemy extends Sprite {
     public void render(Graphics g) 
     {
         texture.drawCentered((int)position.x,(int)position.y);
-        
         g.setColor(Color.green);
         g.fillRect(position.x-width/2, position.y-height/2, health/2, 10.0f);
+    }
+    
+    public void damage(int amount)
+    {
+        health -= amount;
+    }
+    
+    public int getHealth()
+    {
+        return health;
+    }
+    
+    @Override
+    public Rect boundingBox()
+    {
+        System.out.println(position);
+        return new Rect(position.x - width/2,
+                        position.y - height/2,
+                        width,
+                        height);
     }
 }

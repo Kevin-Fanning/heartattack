@@ -31,7 +31,7 @@ public class BasicTower extends Tower {
         
         for (int i = 0; i < 20; i++)
         {
-            bulletQue.addLast(new Bullet());
+            bulletQue.addLast(new Bullet(this));
         }
         
         fireRate = 500;
@@ -85,7 +85,10 @@ public class BasicTower extends Tower {
         //TODO: sell the tower
     }
 
-    public void init(String turretPath,String basePath) throws SlickException
+    //Initialize the tower with 2 images. a turret and a base
+    //init(String) is for one picture towers
+    @Override
+    public void init2(String turretPath,String basePath) throws SlickException
     {
         super.init(basePath);
         turret = new Image(turretPath);
@@ -121,8 +124,16 @@ public class BasicTower extends Tower {
         }
     }
     
+    //return an arrayque of the active bullets
     public ArrayDeque<Bullet> getBullets()
     {
         return activeBullets;
+    }
+    
+    //Call this to remove a bullet from the active bullet lists
+    public void removeBullet(Bullet b)
+    {
+        bulletQue.add(b);
+        activeBullets.remove(b);
     }
 }

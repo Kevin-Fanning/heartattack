@@ -21,7 +21,6 @@ public class MainGameState extends BasicGameState{
     private LinkedList<Enemy> enemyList;
     private LinkedList<Tower> towerList;
     
-    private BasicTower tower;
     
     private TextField tf;
     private TrueTypeFont font;
@@ -37,7 +36,7 @@ public class MainGameState extends BasicGameState{
         Enemy newEnemy = new Enemy();
         enemyList.add(newEnemy);
         
-        tower = new BasicTower();
+        BasicTower tower = new BasicTower();
         tower.position = new Vector2(400,300);
         towerList.add(tower);
         font = new TrueTypeFont(new Font("Arial Bold", Font.PLAIN, 12), true);
@@ -57,7 +56,9 @@ public class MainGameState extends BasicGameState{
         tf.setBackgroundColor(Color.gray);
         enemyList.getFirst().init("germ.png");
         
-        tower.init("turret.png","base.png");
+        for (Tower i: towerList){
+            i.init2("turret.png","base.png");
+        }
     }
     
     @Override
@@ -69,9 +70,24 @@ public class MainGameState extends BasicGameState{
         {
             i.update(delta);
         }
-        tower.aim(enemyList);
-        tower.update(delta);
-        tower.fire();
+        for (Tower i : towerList) {
+            i.aim(enemyList);
+            i.update(delta);
+            i.fire();
+            
+            for (Bullet b : i.getBullets())
+            {
+                for (Enemy e : enemyList)
+                {
+                    if (b.boundingBox().intersects(e.boundingBox()))
+                    {
+                        e.damage(10);
+                        b.owner.removeBullet(b);
+                    }
+                }
+            }
+        }
+        
     }
     
     @Override
@@ -82,7 +98,10 @@ public class MainGameState extends BasicGameState{
         {
             i.render(g);
         }
-        tower.render(g);
+        for (Tower i: towerList)
+        {
+            i.render(g);
+        }
         
         //tf.render(gc, g);
     }   
