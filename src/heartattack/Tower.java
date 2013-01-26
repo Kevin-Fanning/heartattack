@@ -1,6 +1,8 @@
 
 package heartattack;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author Kevin
@@ -28,7 +30,7 @@ public abstract class Tower extends Sprite{
     public abstract void hover();
     
     //aim at the closest baddie
-    public abstract void aim(Vector2 position);
+    public abstract void aim(LinkedList<Enemy> enemyList);
     
     //fire the weapon
     public abstract void fire();

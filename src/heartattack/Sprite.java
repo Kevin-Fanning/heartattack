@@ -11,6 +11,8 @@ public abstract class Sprite {
     protected Vector2 position;
     protected Vector2 velocity;
     protected Vector2 acceleration;
+    protected int height;
+    protected int width;
     
     protected Image texture;
     
@@ -37,6 +39,8 @@ public abstract class Sprite {
     public void init(String path) throws SlickException
     {
         texture = new Image(path);
+        width = texture.getWidth();
+        height = texture.getHeight();
     }
     
     public void update(int delta)
@@ -55,6 +59,6 @@ public abstract class Sprite {
     
     public Rect boundingBox()
     {
-        return new Rect(position.x, position.y, texture.getTextureWidth(), texture.getTextureHeight());
+        return new Rect(position.x, position.y, width, height);
     }
 }
