@@ -13,7 +13,7 @@ import org.newdawn.slick.SlickException;
 public abstract class Tower extends Sprite{
     protected float range;      //How far the tower can shoot
     protected float fireRate;   //How fast the tower fires
-    protected float damage;     //The damage to apply on a hit
+    protected int damage;     //The damage to apply on a hit
     
     protected boolean enabled;
     
@@ -49,4 +49,9 @@ public abstract class Tower extends Sprite{
     
     //Use this to remove a bullet from the active que on a collision
     public abstract void removeBullet(Bullet b);
+    
+    public int getDamage()
+    {
+        return damage;
+    }
 }

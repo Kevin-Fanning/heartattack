@@ -37,7 +37,7 @@ public class MainGameState extends BasicGameState{
         enemyList.add(newEnemy);
         
         BasicTower tower = new BasicTower();
-        tower.position = new Vector2(400,300);
+        tower.position = new Vector2(300,150);
         towerList.add(tower);
         font = new TrueTypeFont(new Font("Arial Bold", Font.PLAIN, 12), true);
     }
@@ -70,7 +70,7 @@ public class MainGameState extends BasicGameState{
         {
             i.update(delta);
         }
-        for (Tower i : towerList) {
+        for (Tower i : towerList) {     //Update towers and check if the bullets hit anything
             i.aim(enemyList);
             i.update(delta);
             i.fire();
@@ -81,8 +81,12 @@ public class MainGameState extends BasicGameState{
                 {
                     if (b.boundingBox().intersects(e.boundingBox()))
                     {
-                        e.damage(10);
-                        b.owner.removeBullet(b);
+                        e.damage(i.getDamage());
+                        if (e.getHealth() <= 0)
+                        {
+                            enemyList.remove(e);
+                        }
+                        i.removeBullet(b);
                     }
                 }
             }

@@ -13,6 +13,7 @@ import org.newdawn.slick.Graphics;
 public class BasicTower extends Tower {
     protected Image turret;
     protected Vector2 aimDirection;
+    protected Enemy target;
     
     protected long lastFire;
     
@@ -31,11 +32,14 @@ public class BasicTower extends Tower {
         
         for (int i = 0; i < 20; i++)
         {
-            bulletQue.addLast(new Bullet(this));
+            bulletQue.addLast(new Bullet());
         }
         
         fireRate = 500;
         lastFire = System.currentTimeMillis();
+        
+        range = 200;
+        damage = 7;
     }
     
     //what do when you place it
@@ -52,19 +56,43 @@ public class BasicTower extends Tower {
         //TODO: transparent while hovered. Colored red if impossible
     }
     
-    //aim at the closest baddie
+    //aim at the closest baddie. stay on target until they leave range.
     @Override
     public void aim(LinkedList<Enemy> enemyList)
     {
-        aimDirection = position.getDirection(enemyList.getFirst().position);
-        turret.setRotation(aimDirection.toDegrees());
+        if (!enemyList.isEmpty())
+        { 
+            if (target == null) //we need a new target
+            {
+                float minDistance = range*range;
+                for (Enemy e: enemyList)
+                {
+                    float curDistance = position.getSquareDistance(e.position);
+                    if (curDistance < minDistance)
+                    {
+                        target = e;
+                        enabled = true;
+                        minDistance = curDistance;
+                    }
+                }
+            }
+            if (target != null)
+            {
+                aimDirection = position.getDirection(target.position);
+                turret.setRotation(aimDirection.toDegrees());
+            }
+        }
+        else 
+        {
+            enabled = false;
+        }
     }
     
     //fire the weapon
     @Override
     public void fire()
     {
-        if (System.currentTimeMillis() - lastFire > fireRate)
+        if (enabled && System.currentTimeMillis() - lastFire > fireRate)
         {
             Bullet temp = bulletQue.poll();
             if (temp != null) {
@@ -125,12 +153,14 @@ public class BasicTower extends Tower {
     }
     
     //return an arrayque of the active bullets
+    @Override
     public ArrayDeque<Bullet> getBullets()
     {
         return activeBullets;
     }
     
     //Call this to remove a bullet from the active bullet lists
+    @Override
     public void removeBullet(Bullet b)
     {
         bulletQue.add(b);

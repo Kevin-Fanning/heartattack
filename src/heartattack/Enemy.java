@@ -75,7 +75,6 @@ public class Enemy extends Sprite {
     @Override
     public Rect boundingBox()
     {
-        System.out.println(position);
         return new Rect(position.x - width/2,
                         position.y - height/2,
                         width,
