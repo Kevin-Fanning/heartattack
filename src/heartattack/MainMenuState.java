@@ -15,24 +15,12 @@ import org.newdawn.slick.Color;
  */
 public class MainMenuState extends BasicGameState {
     private int stateID = -1;
-    private Enemy newEnemy;
-    private BasicTower tower;
-    
-    private TextField tf;
-    private TrueTypeFont font;
+
     
     public MainMenuState(int id)
     {
         stateID = id;
-        
-        newEnemy = new Enemy();
-        newEnemy.setPosition(new Vector2(0.0f, 200.0f));
-        newEnemy.setVelocity(new Vector2(50.0f,0.0f));
-        
-        tower = new BasicTower();
-        tower.position = new Vector2(400,300);
-        
-        font = new TrueTypeFont(new Font("Arial", Font.PLAIN, 12), true);
+
     }
     
     @Override
@@ -43,12 +31,7 @@ public class MainMenuState extends BasicGameState {
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
     {
-        tf = new TextField(gc, font, 50,50, 100, 30);
-        tf.setTextColor(Color.white);
-        tf.setBackgroundColor(Color.gray);
-        newEnemy.init("germ.png");
-        
-        tower.init("turret.png","base.png");
+            sbg.enterState(HeartAttack.GAME_STATE);
     }
     
     @Override
@@ -57,19 +40,14 @@ public class MainMenuState extends BasicGameState {
         //TODO: Get some input updates
         InputController.update(gc.getInput());
 
-        newEnemy.update(delta);
-        tower.aim(newEnemy.position);
-        tower.update(delta);
+        
     }
     
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
     {
         //TODO: Draw some buttons
-        newEnemy.render();
-        tower.render();
-        
-        //tf.render(gc, g);
+
     }
     
     @Override

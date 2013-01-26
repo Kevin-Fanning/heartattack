@@ -11,6 +11,7 @@ import org.newdawn.slick.GameContainer;
 public class InputController {
     public static Input input;
     private static Input lastInput;
+    public static Vector2 msPosition = Vector2.zero();
     
     public static boolean leftMouse;
     public static boolean rightMouse;
@@ -20,8 +21,9 @@ public class InputController {
         lastInput = input;
         input = i;
         
-        leftMouse = input.isMouseButtonDown(0) && !lastInput.isMouseButtonDown(0);
-        rightMouse = input.isMouseButtonDown(1) && !lastInput.isMouseButtonDown(1);
+        msPosition = new Vector2(input.getMouseX(), input.getMouseY());
+        leftMouse = input.isMousePressed(0);
+        rightMouse = input.isMousePressed(1);
     }
     
 

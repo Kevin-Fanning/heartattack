@@ -1,0 +1,7 @@
+[] Wave creation
+[] level loader
+[] method to select and place towers
+
+[] more towers
+[] more enemies
+[] economy

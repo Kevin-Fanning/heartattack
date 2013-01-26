@@ -28,6 +28,7 @@ public class HeartAttack extends StateBasedGame {
         this.addState(new MainMenuState(MAIN_MENU_STATE));
         this.addState(new LevelSelectState(LEVEL_SELECT_STATE));
         this.addState(new MainGameState(GAME_STATE));
+        
     }
 
     
@@ -38,6 +39,7 @@ public class HeartAttack extends StateBasedGame {
         
         app.setDisplayMode(800,600, false);
         app.setMinimumLogicUpdateInterval(2);
+        
         app.start();
     }
 }
