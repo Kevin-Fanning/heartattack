@@ -1,6 +1,7 @@
 
 package heartattack;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 /**
@@ -49,7 +50,7 @@ public abstract class Sprite {
         position.addE(velocity.times(delta/1000.0f));
     }
     
-    public void render()
+    public void render(Graphics g)
     {
         if (texture != null) 
         {

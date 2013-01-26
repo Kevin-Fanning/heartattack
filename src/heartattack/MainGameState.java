@@ -9,6 +9,7 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.*;
 import java.util.LinkedList;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 /**
  *
@@ -18,22 +19,27 @@ public class MainGameState extends BasicGameState{
     private int stateID = -1;
     
     private LinkedList<Enemy> enemyList;
+    private LinkedList<Tower> towerList;
+    
     private BasicTower tower;
     
     private TextField tf;
     private TrueTypeFont font;
     
+    private Image background;
+    
     public MainGameState(int id)
     {
         enemyList = new LinkedList<>();
+        towerList = new LinkedList<>();
+        
         stateID = id;
         Enemy newEnemy = new Enemy();
-        newEnemy.setVelocity(new Vector2(50.0f,1.0f));
         enemyList.add(newEnemy);
         
         tower = new BasicTower();
         tower.position = new Vector2(400,300);
-        
+        towerList.add(tower);
         font = new TrueTypeFont(new Font("Arial Bold", Font.PLAIN, 12), true);
     }
     
@@ -45,6 +51,7 @@ public class MainGameState extends BasicGameState{
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
     {
+        background = new Image("level1.png");
         tf = new TextField(gc, font, 50,50, 100, 30);
         tf.setTextColor(Color.white);
         tf.setBackgroundColor(Color.gray);
@@ -70,11 +77,12 @@ public class MainGameState extends BasicGameState{
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
     {
+        background.draw(0,0);
         for (Enemy i: enemyList)
         {
-            i.render();
+            i.render(g);
         }
-        tower.render();
+        tower.render(g);
         
         //tf.render(gc, g);
     }   

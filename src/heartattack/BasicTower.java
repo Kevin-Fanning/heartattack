@@ -5,6 +5,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import java.util.ArrayDeque;
 import java.util.LinkedList;
+import org.newdawn.slick.Graphics;
 /**
  *
  * @author Kevin
@@ -110,13 +111,18 @@ public class BasicTower extends Tower {
     }
     
     @Override
-    public void render()
+    public void render(Graphics g)
     {
-        super.render();
+        super.render(g);
         turret.draw((int)position.x, (int)position.y);
         for (Bullet i : activeBullets) 
         {
-            i.render();
+            i.render(g);
         }
+    }
+    
+    public ArrayDeque<Bullet> getBullets()
+    {
+        return activeBullets;
     }
 }
