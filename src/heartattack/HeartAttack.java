@@ -6,37 +6,33 @@ package heartattack;
 
 
 import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
+import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 /**
  *
  * @author Kevin
  */
-public class HeartAttack extends BasicGame {
-
+public class HeartAttack extends StateBasedGame {
+    public final static int MAIN_MENU_STATE = 0;
+    public final static int LEVEL_SELECT_STATE = 1;
+    public final static int GAME_STATE = 2;
+    
     public HeartAttack()
     {
         super("Heart Attack");
     }
-    
     @Override
-    public void init(GameContainer gc) throws SlickException {
-        
-    }
-    
-    @Override
-    public void update(GameContainer gc, int delta) throws SlickException
+    public void initStatesList(GameContainer gc) throws SlickException
     {
-        
+        this.addState(new MainMenuState(MAIN_MENU_STATE));
+        this.addState(new LevelSelectState(LEVEL_SELECT_STATE));
+        this.addState(new MainGameState(GAME_STATE));
     }
-    
-    @Override
-    public void render(GameContainer gc, Graphics g) throws SlickException
-    {
-        
-    }
+
     
     public static void main(String[] args) throws SlickException
     {
