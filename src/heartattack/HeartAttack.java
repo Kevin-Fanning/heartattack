@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package heartattack;
 
 
@@ -40,6 +37,7 @@ public class HeartAttack extends StateBasedGame {
         AppGameContainer app = new AppGameContainer(h);
         
         app.setDisplayMode(800,600, false);
+        app.setMinimumLogicUpdateInterval(2);
         app.start();
     }
 }

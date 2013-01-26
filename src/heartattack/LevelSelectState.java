@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package heartattack;
 
 import org.newdawn.slick.GameContainer;
@@ -40,5 +37,11 @@ public class LevelSelectState extends BasicGameState{
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
     {
         
-    }    
+    }  
+    
+    @Override
+    public void enter(GameContainer gc, StateBasedGame sbg)
+    {
+        
+    }
 }

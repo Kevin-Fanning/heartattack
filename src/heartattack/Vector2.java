@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package heartattack;
 
 /**
@@ -49,5 +46,34 @@ public class Vector2 {
     public static Vector2 zero() 
     {
         return new Vector2();
+    }
+    
+    //Returns a normal vector pointing from one this position to another
+    public Vector2 getDirection(Vector2 other)
+    {
+        Vector2 temp = other.add(this.times(-1.0f));
+        return temp.normalize();
+    }
+    
+    public float dot(Vector2 other)
+    {
+        return x*other.x + y*other.y;
+    }
+    
+    //Returns the vector in radians from (1,0)
+    public float toDegrees()
+    {
+        float temp = (float)((Math.acos(this.dot(new Vector2(1,0))))*(180/Math.PI));
+        if (y <=0) {
+            return temp * -1;
+        } else {
+            return temp;
+        }
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "(" + x + "," + y + ")";
     }
 }

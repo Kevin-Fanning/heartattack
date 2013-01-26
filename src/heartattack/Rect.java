@@ -29,4 +29,12 @@ public class Rect {
         }
         return false;
     }
+    
+    public boolean intersects(Vector2 other)
+    {
+        if ((other.x > x) && (other.x < x+width) && (other.y > y) && (other.y < y+length)) {
+            return true;
+        }
+        return false;
+    }
 }
