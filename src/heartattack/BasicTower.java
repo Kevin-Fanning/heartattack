@@ -56,14 +56,10 @@ public class BasicTower extends Tower {
         //TODO: transparent while hovered. Colored red if impossible
     }
     
-    //aim at the closest baddie. stay on target until they leave range.
     @Override
-    public void aim(LinkedList<Enemy> enemyList)
+    public void reacquire(LinkedList<Enemy> enemyList)
     {
-        if (!enemyList.isEmpty())
-        { 
-            if (target == null) //we need a new target
-            {
+        enabled = false;
                 float minDistance = range*range;
                 for (Enemy e: enemyList)
                 {
@@ -75,11 +71,31 @@ public class BasicTower extends Tower {
                         minDistance = curDistance;
                     }
                 }
+    }
+    
+    //aim at the closest baddie. stay on target until they leave range.
+    @Override
+    public void aim(LinkedList<Enemy> enemyList)
+    {
+        
+        if (!enemyList.isEmpty())
+        { 
+            
+            if (target == null || !target.alive) //we need a new target
+            {
+                reacquire(enemyList);
+                
             }
-            if (target != null)
+            else // shift direction towards the target
             {
                 aimDirection = position.getDirection(target.position);
                 turret.setRotation(aimDirection.toDegrees());
+
+                //If the target is out of range, reset
+                if (position.getSquareDistance(target.position) > range*range)
+                {
+                    reacquire(enemyList);
+                }
             }
         }
         else 
@@ -150,6 +166,7 @@ public class BasicTower extends Tower {
         {
             i.render(g);
         }
+        g.drawOval(position.x-range + width/2, position.y-range + height/2, range*2, range*2);
     }
     
     //return an arrayque of the active bullets

@@ -14,6 +14,8 @@ public class Enemy extends Sprite {
     protected Iterator<Vector2> wayItr;
     protected Vector2 curWaypoint;
     
+    public boolean alive = true;
+    
     protected int health;
     
     protected float speed = 40;
@@ -65,6 +67,7 @@ public class Enemy extends Sprite {
     public void damage(int amount)
     {
         health -= amount;
+        if (health <= 0) { alive = false;}
     }
     
     public int getHealth()
@@ -80,4 +83,6 @@ public class Enemy extends Sprite {
                         width,
                         height);
     }
+    
+
 }

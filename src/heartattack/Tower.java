@@ -54,4 +54,6 @@ public abstract class Tower extends Sprite{
     {
         return damage;
     }
+    //Use this to reacquire a target when the current one dies
+    public abstract void reacquire(LinkedList<Enemy> enemyList);
 }
