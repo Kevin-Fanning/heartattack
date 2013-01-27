@@ -23,8 +23,6 @@ public class MainGameState extends BasicGameState{
     private LinkedList<Tower> towerList;
     
     
-    private Image background;
-    
     private Sound ekg;
     private Music bgMusic;
     
@@ -59,7 +57,6 @@ public class MainGameState extends BasicGameState{
         enemyWave = new EnemyWave();
         enemyWave.loadLevel(Player.levelName);
         Player.towerList = towerList;
-        background = new Image("level1.png");
         BasicTower.loadImages("turret.png","base.png");
         LaserTower.loadImages("pturret.png","pbase.png");
         CannonTower.loadImages("gturret.png","gbase.png");
@@ -118,7 +115,7 @@ public class MainGameState extends BasicGameState{
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
     {
-        background.draw(0,0);
+        Level.background.draw(0,0);
         
         enemyWave.render(g);
         for (Tower i: towerList)

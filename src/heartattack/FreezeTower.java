@@ -28,7 +28,7 @@ public class FreezeTower extends Tower
         super();
         isFiring = false;
         fireSize = 0;
-        alpha = 255;
+        alpha = 200;
         
         width = base.getWidth();
         height = base.getHeight();
@@ -99,7 +99,7 @@ public class FreezeTower extends Tower
         if (alpha <= 20)
         {
             isFiring = false;
-            alpha = 255;
+            alpha = 200;
             fireSize = 0;
         }
     }

@@ -70,29 +70,29 @@ public class Player {
     
     public static void init(LinkedList<Tower> towerList) throws SlickException
     {
-        plasma = 1200;
+        plasma = 200;
         redBlood = 20;
         
         StoreIcon basicTowerIcon = new StoreIcon(TowerType.BASIC);
-        basicTowerIcon.setTooltip("A basic shooter tower \n70 Plasma");
+        basicTowerIcon.setTooltip("A basic shooter tower \n50 Plasma");
         basicTowerIcon.init("base.png");
         basicTowerIcon.position = new Vector2(100,550);
         icons.add(basicTowerIcon);
         
         StoreIcon laserTowerIcon = new StoreIcon(TowerType.LASER);
-        laserTowerIcon.setTooltip("Laser tower \n200 Plasma");
+        laserTowerIcon.setTooltip("Laser tower \n125 Plasma");
         laserTowerIcon.init("pbase.png");
         laserTowerIcon.position = new Vector2(150,550);
         icons.add(laserTowerIcon);
         
         StoreIcon cannonTowerIcon = new StoreIcon(TowerType.CANNON);
-        cannonTowerIcon.setTooltip("Large cannon\n250 Plasma");
+        cannonTowerIcon.setTooltip("Large cannon\n200 Plasma");
         cannonTowerIcon.init("gbase.png");
         cannonTowerIcon.position = new Vector2(200,550);
         icons.add(cannonTowerIcon);
         
         StoreIcon freezeTowerIcon = new StoreIcon(TowerType.FREEZE);
-        freezeTowerIcon.setTooltip("Slows enemies\n225 Plasma");
+        freezeTowerIcon.setTooltip("Slows enemies\n125 Plasma");
         freezeTowerIcon.init("bbase.png");
         freezeTowerIcon.position = new Vector2(250, 550);
         icons.add(freezeTowerIcon);
@@ -142,7 +142,7 @@ public class Player {
                 else if ("Freeze".equals(((Element)nl.item(i)).getAttribute("name")))
                 {
                     freezeTowerEl = (Element)nl.item(i);
-                    FreezeTower.plasmaCost = Integer.parseInt(cannonTowerEl.getElementsByTagName("plasmaCost").item(0).getTextContent());
+                    FreezeTower.plasmaCost = Integer.parseInt(freezeTowerEl.getElementsByTagName("plasmaCost").item(0).getTextContent());
                 }
             }
         }

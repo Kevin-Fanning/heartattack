@@ -10,28 +10,28 @@ and open the template in the editor.
         <range>150</range>
         <fireRate>500</fireRate>
         <damage>6</damage>
-        <plasmaCost>70</plasmaCost>
+        <plasmaCost>50</plasmaCost>
         <fireSpeed>300</fireSpeed>
     </Tower>
     <Tower name="Laser">
         <range>150</range>
         <fireRate>85</fireRate>
-        <damage>3</damage>
-        <plasmaCost>200</plasmaCost>
+        <damage>2</damage>
+        <plasmaCost>125</plasmaCost>
         <fireSpeed>0</fireSpeed>
     </Tower>
     <Tower name="Cannon">
         <range>320</range>
         <fireRate>5500</fireRate>
-        <damage>85</damage>
-        <plasmaCost>250</plasmaCost>
+        <damage>75</damage>
+        <plasmaCost>200</plasmaCost>
         <fireSpeed>250</fireSpeed>
     </Tower>
     <Tower name="Freeze">
         <range>110</range>
         <fireRate>3000</fireRate>
         <damage>28</damage>
-        <plasmaCost>225</plasmaCost>
+        <plasmaCost>125</plasmaCost>
         <fireSpeed>0</fireSpeed>
     </Tower>
 </root>

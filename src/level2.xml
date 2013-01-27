@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+    <Wave>
+        <Normal dif="0.9">5</Normal>
+    </Wave>
+    <Wave>
+        <Fast dif="0.9">5</Fast>
+    </Wave>
+    <Wave>
+        <Normal dif="0.5">20</Normal>
+    </Wave>
+    <WayPoint>
+        <x>-100</x>
+        <y>210</y>
+    </WayPoint>
+    <WayPoint>
+        <x>440</x>
+        <y>250</y>
+    </WayPoint>
+    <WayPoint>
+        <x>475</x>
+        <y>650</y>
+    </WayPoint>
+</root>
