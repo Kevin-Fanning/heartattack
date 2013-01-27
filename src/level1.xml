@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
-
 
 <root>
     <Wave>
@@ -26,7 +21,17 @@ and open the template in the editor.
         <Normal dif="2.0">15</Normal>
     </Wave>
     <Wave>
-        <Armored dif="10.0">1</Armored>
+        <Normal dif="2.0">15</Normal>
+        <Armored dif="1.4">5</Armored>
+    </Wave>
+    <Wave>
+        <Normal dif="2.0">20</Normal>
+    </Wave>
+    <Wave>
+        <Normal dif="3.0">15</Normal>
+    </Wave>
+    <Wave>
+        <Armored dif="17.0">1</Armored>
     </Wave>
     <WayPoint>
         <x>-100</x>

@@ -9,29 +9,29 @@ and open the template in the editor.
     <Tower name="Basic">
         <range>150</range>
         <fireRate>500</fireRate>
-        <damage>7</damage>
-        <plasmaCost>100</plasmaCost>
+        <damage>6</damage>
+        <plasmaCost>70</plasmaCost>
         <fireSpeed>300</fireSpeed>
     </Tower>
     <Tower name="Laser">
         <range>150</range>
-        <fireRate>50</fireRate>
+        <fireRate>85</fireRate>
         <damage>3</damage>
-        <plasmaCost>300</plasmaCost>
+        <plasmaCost>200</plasmaCost>
         <fireSpeed>0</fireSpeed>
     </Tower>
     <Tower name="Cannon">
         <range>320</range>
-        <fireRate>7000</fireRate>
-        <damage>105</damage>
+        <fireRate>5500</fireRate>
+        <damage>85</damage>
         <plasmaCost>250</plasmaCost>
         <fireSpeed>250</fireSpeed>
     </Tower>
     <Tower name="Freeze">
         <range>110</range>
-        <fireRate>4000</fireRate>
+        <fireRate>3000</fireRate>
         <damage>28</damage>
-        <plasmaCost>350</plasmaCost>
+        <plasmaCost>225</plasmaCost>
         <fireSpeed>0</fireSpeed>
     </Tower>
 </root>

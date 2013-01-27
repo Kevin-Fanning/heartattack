@@ -40,7 +40,8 @@ public class LaserTower extends Tower {
 
         ownTurret = turret.getScaledCopy(1);
         
-        try {fireSound = new Sound("src/laser.wav");} catch (Exception e) {System.out.println(e);}
+        try {fireSound = new Sound("src/laser.wav");} catch (Exception e) 
+            {System.out.println(e);}
     }
     
     @Override

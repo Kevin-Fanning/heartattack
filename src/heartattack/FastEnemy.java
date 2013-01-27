@@ -23,7 +23,7 @@ public class FastEnemy extends Enemy
         super();
         velocity.timesE(1/speed);
         health = 50;
-        speed = 90;
+        speed = 110;
         velocity.timesE(speed);
         curFrame = 0;
     }

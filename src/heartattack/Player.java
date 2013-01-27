@@ -12,6 +12,7 @@ import org.newdawn.slick.SlickException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.util.Iterator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -28,7 +29,8 @@ public class Player {
         BASIC,
         LASER,
         CANNON,
-        FREEZE
+        FREEZE,
+        DESTROY
     }
 
     public static Image[] towerTexes = new Image[4];    //images for the store thumbnails
@@ -72,13 +74,13 @@ public class Player {
         redBlood = 20;
         
         StoreIcon basicTowerIcon = new StoreIcon(TowerType.BASIC);
-        basicTowerIcon.setTooltip("A basic shooter tower \n100 Plasma");
+        basicTowerIcon.setTooltip("A basic shooter tower \n70 Plasma");
         basicTowerIcon.init("base.png");
         basicTowerIcon.position = new Vector2(100,550);
         icons.add(basicTowerIcon);
         
         StoreIcon laserTowerIcon = new StoreIcon(TowerType.LASER);
-        laserTowerIcon.setTooltip("Laser tower \n300 Plasma");
+        laserTowerIcon.setTooltip("Laser tower \n200 Plasma");
         laserTowerIcon.init("pbase.png");
         laserTowerIcon.position = new Vector2(150,550);
         icons.add(laserTowerIcon);
@@ -90,10 +92,16 @@ public class Player {
         icons.add(cannonTowerIcon);
         
         StoreIcon freezeTowerIcon = new StoreIcon(TowerType.FREEZE);
-        freezeTowerIcon.setTooltip("Slows enemies\n350 Plasma");
+        freezeTowerIcon.setTooltip("Slows enemies\n225 Plasma");
         freezeTowerIcon.init("bbase.png");
         freezeTowerIcon.position = new Vector2(250, 550);
         icons.add(freezeTowerIcon);
+        
+        StoreIcon demolishIcon = new StoreIcon(TowerType.DESTROY);
+        demolishIcon.setTooltip("Destroys a tower\n50p refund!");
+        demolishIcon.init("dbase.png");
+        demolishIcon.position = new Vector2(300, 550);
+        icons.add(demolishIcon);
         
         Player.towerList = towerList;
         
@@ -219,6 +227,20 @@ public class Player {
                         }
                         break;
                     } 
+                    case DESTROY:
+                    {
+                        Iterator<Tower> itr = towerList.listIterator();
+                        while (itr.hasNext())
+                        {
+                            Tower t = itr.next();
+                            
+                            if (t.boundingBox().intersects(InputController.msPosition))
+                            {
+                                plasma += 50;
+                                itr.remove();
+                            }
+                        }
+                    }
                 }
             }
             //Is this a valid place to put a tower?
@@ -379,6 +401,8 @@ public class Player {
                     }
                     break;
                 }
+                case DESTROY:
+                    towerTexes[0].draw(heldPosition.x, heldPosition.y, new Color(0,0,0,255));
             }
         }
     }
