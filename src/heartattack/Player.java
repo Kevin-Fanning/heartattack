@@ -2,18 +2,26 @@
 package heartattack;
 
 import java.util.LinkedList;
-import org.lwjgl.input.Cursor;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Element;
+
 /**
  *
  * @author Kevin
  */
 //This class holds the player's resources and displays the GUI and store
+//Behold the power of the blob class. oops :(
 public class Player {
     public enum TowerType {
         BASIC,
@@ -23,12 +31,13 @@ public class Player {
 
     public static Image[] towerTexes = new Image[1];    //images for the store thumbnails
     
-    protected static int redBlood = 0;      //the amount of red blood the player has
+    protected static int redBlood = 20;      //the amount of red blood the player has
     protected static int whiteBlood = 0;    //.. white blood..
     protected static int plasma = 200; //.. plasma ..
     
     protected static TowerType heldType;    //The type of tower the player is holding
     protected static Vector2 heldPosition;  //Where the tower is held at before buying(mouse position)
+    protected static boolean canPlace;
     
     protected static Tower lastSelected;    //The last tower the player has highlighted
     
@@ -38,6 +47,12 @@ public class Player {
     
     protected static LinkedList<StoreIcon> icons = new LinkedList<>(); //A list of tower icons
    
+    protected static Image layerMask;
+    
+    protected static DocumentBuilderFactory dbf;
+    protected static DocumentBuilder db;
+    protected static File xmlFile;
+    protected static Element basicTowerEl;
     
     public static void init(LinkedList<Tower> towerList) throws SlickException
     {
@@ -48,7 +63,8 @@ public class Player {
         
         Player.towerList = towerList;
         
-        towerTexes[0] = new Image("base.png");
+        towerTexes[0] = BasicTower.base;
+        layerMask = Level.getLayerMask();
         
         for (StoreIcon i : icons)
         {
@@ -56,6 +72,23 @@ public class Player {
             i.position = new Vector2(50, 550);
         }
         heldPosition = new Vector2();
+        
+        try {
+            dbf = DocumentBuilderFactory.newInstance();
+            db = dbf.newDocumentBuilder();
+            xmlFile = new File("src/TowerSpecs.xml");
+            Document doc = db.parse(xmlFile);
+            doc.getDocumentElement().normalize();
+            NodeList nl = doc.getElementsByTagName("Tower");
+            for (int i = 0; i < nl.getLength(); ++i)
+            {
+                if ("Basic".equals(((Element)nl.item(i)).getAttribute("name")))
+                {
+                    basicTowerEl = (Element)nl.item(i);
+                }
+            }
+        }
+        catch (Exception e) {System.out.println(e.getMessage());}
     }
     
     public static void update(GameContainer gc, int delta)
@@ -79,15 +112,45 @@ public class Player {
                     case BASIC:
                     {
                         BasicTower bt = new BasicTower();
-                        if (bt.plasmaCost <= plasma) 
+                        if (canPlace) 
                         {
-                            plasma -= bt.plasmaCost;
+                            
+                            bt.range = Integer.parseInt(basicTowerEl.getElementsByTagName("range").item(0).getTextContent());
+                            bt.fireRate = Integer.parseInt(basicTowerEl.getElementsByTagName("fireRate").item(0).getTextContent());
+                            bt.damage = Integer.parseInt(basicTowerEl.getElementsByTagName("damage").item(0).getTextContent());
+                            BasicTower.plasmaCost = Integer.parseInt(basicTowerEl.getElementsByTagName("plasmaCost").item(0).getTextContent());
+                            BasicTower.fireSpeed = Integer.parseInt(basicTowerEl.getElementsByTagName("fireSpeed").item(0).getTextContent());
                             bt.position = new Vector2(InputController.msPosition.x, InputController.msPosition.y);
                             towerList.add(bt);
+                            plasma -= BasicTower.plasmaCost;
                         }
                         break;
                     }
                 }
+            }
+            canPlace = true;
+            for (Tower t: towerList)
+            {
+                if (t.boundingBox().intersects(new Rect(heldPosition.x, heldPosition.y, towerTexes[0].getWidth(), towerTexes[0].getHeight())))
+                {
+                    canPlace = false;
+                }
+            }
+            switch (heldType)
+            {
+                case BASIC:
+                {
+                    if (plasma < BasicTower.plasmaCost)
+                    {
+                        canPlace = false;
+                    }
+                }
+            }
+            //TODO: if tower is not on the walls, canPlace = false
+            Color curColor = layerMask.getColor((int)InputController.msPosition.x, (int)InputController.msPosition.y);
+            if (curColor.r == 1.0f)
+            {
+                canPlace = false;
             }
             heldPosition = InputController.msPosition;
         }
@@ -130,6 +193,7 @@ public class Player {
     
     public static void render(Graphics g)
     {
+        //Display the currencies
         g.setColor(Color.gray);
         g.fillRect(10,10,380,20);
         g.setColor(Color.yellow);
@@ -146,12 +210,27 @@ public class Player {
         {
             switch (heldType)
             {
-                //TODO: draw in red if not able to place
                 case BASIC :
                 {
-                    towerTexes[0].draw(heldPosition.x, heldPosition.y, new Color(255,255,255,127));
+                    if (canPlace)
+                    {
+                        towerTexes[0].draw(heldPosition.x, heldPosition.y, new Color(255,255,255,127));//No tint, but half transparency
+                    }
+                    else
+                    {
+                        towerTexes[0].draw(heldPosition.x, heldPosition.y, new Color(255, 50,50,127));//Red tint and half transparency
+                    }
                 }
             }
         }
+    }
+    
+    public static void loseLife()
+    {
+        redBlood--;
+    }
+    public static void addPlasma(int amt)
+    {
+        plasma += amt;
     }
 }

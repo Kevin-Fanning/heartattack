@@ -13,22 +13,25 @@ public class Enemy extends Sprite {
     protected LinkedList<Vector2> waypoints;
     protected Iterator<Vector2> wayItr;
     protected Vector2 curWaypoint;
-    
+    protected boolean isFinished;
     public boolean alive = true;
     
     protected int health;
     
     protected float speed = 40;
+    protected int bounty = 10;
+    
     public Enemy()
     {
         super();
-        waypoints = new LinkedList<>();
-        waypoints.add(new Vector2(-100,100));
-        waypoints.add(new Vector2(600,100));
-        waypoints.add(new Vector2(600, 300));
-        waypoints.add(new Vector2(100,300));
-        waypoints.add(new Vector2(100, 500));
-        waypoints.add(new Vector2(800, 500));
+        waypoints = Level.getWaypoints();
+//        waypoints = new LinkedList<>();
+//        waypoints.add(new Vector2(-100,100));
+//        waypoints.add(new Vector2(600,100));
+//        waypoints.add(new Vector2(600, 300));
+//        waypoints.add(new Vector2(100,300));
+//        waypoints.add(new Vector2(100, 500));
+//        waypoints.add(new Vector2(900, 500));
         
         curWaypoint = waypoints.getFirst();
         position = new Vector2(curWaypoint.x - width/2, curWaypoint.y - height/2);
@@ -38,6 +41,8 @@ public class Enemy extends Sprite {
         velocity = position.getDirection(curWaypoint).times(speed);
         
         health = 100;
+        
+        isFinished = false;
     }
     
     @Override
@@ -51,7 +56,8 @@ public class Enemy extends Sprite {
                 velocity = position.getDirection(curWaypoint).times(speed);
             } else
             {
-                //TODO: he got to the end. you lose some health
+                Player.loseLife();
+                isFinished = true;
             }
         }
         super.update(delta);
@@ -84,5 +90,12 @@ public class Enemy extends Sprite {
                         height);
     }
     
-
+    public boolean isFinished()
+    {
+        return isFinished;
+    }
+    public int getBounty()
+    {
+        return bounty;
+    }
 }

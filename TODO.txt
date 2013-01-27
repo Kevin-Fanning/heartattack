@@ -1,6 +1,7 @@
 [] Wave creation
-[] level loader
-[] method to select and place towers
+[/] level loader
+[x] method to select and place towers
+[] sell towers
 
 [] more towers
 [] more enemies

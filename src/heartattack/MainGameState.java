@@ -24,7 +24,12 @@ public class MainGameState extends BasicGameState{
     
     public MainGameState(int id)
     {
-        
+        try {
+            Level.loadLevel("level1");
+        } catch (SlickException e)
+        {
+            System.out.println(e.getMessage());
+        }
         towerList = new LinkedList<>();
         
         stateID = id;
@@ -44,34 +49,21 @@ public class MainGameState extends BasicGameState{
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
     {
-        background = new Image("level1.png");
-        BasicTower.init2("turret.png","base.png");
-        Bullet.loadImage("bullet.png");
         
+        background = new Image("level1.png");
+        BasicTower.loadImages("turret.png","base.png");
+        Bullet.loadImage("bullet.png");
+        Player.init(towerList);
         enemyWave.init();
         
         
-        Player.init(towerList);
+
     }
     
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta)
     {
         InputController.update(gc.getInput());
-        //Place a tower on click
-        if (InputController.input.isMousePressed(0))
-        {
-            BasicTower t = new BasicTower();
-            try {
-                t.init2("turret.png","base.png");
-            }catch (SlickException e)
-            { 
-                System.out.println(e.getMessage());
-            }
-            t.position.x = InputController.input.getMouseX();
-            t.position.y = InputController.input.getMouseY();
-            towerList.add(t);
-        }
 
         enemyWave.update(delta);
         
@@ -93,6 +85,7 @@ public class MainGameState extends BasicGameState{
                         if (e.getHealth() <= 0)
                         {
                             itr.remove();
+                            Player.addPlasma(e.getBounty());
                             i.reacquire(enemyWave.getEnemies());
                         }
                         i.removeBullet(b);
@@ -120,6 +113,6 @@ public class MainGameState extends BasicGameState{
     @Override
     public void enter(GameContainer gc, StateBasedGame sbg)
     {
-       
+
     }
 }

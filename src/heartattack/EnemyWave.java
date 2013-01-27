@@ -42,9 +42,16 @@ public class EnemyWave {
     
     public void update(int delta)
     {
-        for (Enemy e: deployedList)
+        Iterator<Enemy> itr = deployedList.listIterator();
+        while (itr.hasNext()) 
         {
+            Enemy e = itr.next();
+            
             e.update(delta);
+            if (e.isFinished())
+            {
+                itr.remove();
+            }
         }
         if (System.currentTimeMillis() - lastRelease > delayTime)
         {

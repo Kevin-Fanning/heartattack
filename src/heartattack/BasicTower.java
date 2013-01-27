@@ -7,6 +7,9 @@ import java.util.ArrayDeque;
 import java.util.LinkedList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 /**
  *
  * @author Kevin
@@ -20,7 +23,7 @@ public class BasicTower extends Tower {
     
     protected long lastFire;
     
-    protected final static float fireSpeed = 300;
+    protected static float fireSpeed;
     protected ArrayDeque<Bullet> bulletQue;
     protected ArrayDeque<Bullet> activeBullets;
     
@@ -43,13 +46,13 @@ public class BasicTower extends Tower {
             bulletQue.addLast(new Bullet());
         }
         
-        fireRate = 500;
+//        fireRate = 500;
         lastFire = System.currentTimeMillis();
         
-        range = 200;
-        damage = 7;
-        
-        plasmaCost = 100;
+//        range = 200;
+//        damage = 7;
+//        
+//        plasmaCost = 100;
         
         ownTurret = turret.getScaledCopy(1);
     }
@@ -130,12 +133,13 @@ public class BasicTower extends Tower {
     }
 
     //Initialize the tower with 2 images. a turret and a base
-    public static void init2(String turretPath,String basePath) throws SlickException
+    public static void loadImages(String turretPath,String basePath) throws SlickException
     {
         base = new Image(basePath);
         turret = new Image(turretPath);
         turret.setCenterOfRotation(turret.getWidth()/2, turret.getHeight()/2);
     }
+    
     
     @Override
     public void update(int delta)

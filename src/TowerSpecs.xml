@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<root>
+    <Tower name="Basic">
+        <range>200</range>
+        <fireRate>500</fireRate>
+        <damage>7</damage>
+        <plasmaCost>100</plasmaCost>
+        <fireSpeed>300</fireSpeed>
+    </Tower>
+</root>
