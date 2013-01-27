@@ -39,7 +39,7 @@ public class MainMenuState extends BasicGameState {
     {
         //TODO: Get some input updates
         InputController.update(gc.getInput());
-
+        sbg.enterState(HeartAttack.GAME_STATE);
         
     }
     

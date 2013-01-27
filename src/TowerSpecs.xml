@@ -13,4 +13,18 @@ and open the template in the editor.
         <plasmaCost>100</plasmaCost>
         <fireSpeed>300</fireSpeed>
     </Tower>
+    <Tower name="Laser">
+        <range>300</range>
+        <fireRate>50</fireRate>
+        <damage>3</damage>
+        <plasmaCost>300</plasmaCost>
+        <fireSpeed>0</fireSpeed>
+    </Tower>
+    <Tower name="Cannon">
+        <range>250</range>
+        <fireRate>7000</fireRate>
+        <damage>105</damage>
+        <plasmaCost>250</plasmaCost>
+        <fireSpeed>250</fireSpeed>
+    </Tower>
 </root>

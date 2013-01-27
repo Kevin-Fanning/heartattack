@@ -12,7 +12,6 @@ import org.newdawn.slick.SlickException;
  */
 public class StoreIcon extends Sprite {
     private String tooltipText = "";
-    private boolean displayTooltip = false;
     private Player.TowerType towerType;
     
     private int cost;

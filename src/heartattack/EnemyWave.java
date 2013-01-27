@@ -27,6 +27,8 @@ public class EnemyWave {
     protected int currentWave;
     protected NodeList waveNodes;
     
+    protected boolean levelBeaten = false;
+    
     //TODO: make this load from a file or something
     public EnemyWave()
     {
@@ -36,7 +38,8 @@ public class EnemyWave {
         
         delayTime = 2000;
         lastRelease = System.currentTimeMillis();
-        currentWave = 0;
+        currentWave = 1;
+        levelBeaten = false;
     }
     
     private void fillQue()
@@ -58,12 +61,37 @@ public class EnemyWave {
                         enemyQue.add(e);
                     }
                 }
+                if (waveContents.item(i).getNodeName().equals("Fast"))
+                {
+                    float diff = Float.parseFloat(((Element)waveContents.item(i)).getAttribute("dif"));
+                    for (int j = 0; j < Integer.parseInt(waveContents.item(i).getTextContent()); ++j)
+                    {
+                        Enemy e = new FastEnemy();
+                        
+                        e.setHealth(e.health*diff);
+                        e.bounty *= diff;
+                        enemyQue.add(e);
+                    }
+                }
+                if (waveContents.item(i).getNodeName().equals("Armored"))
+                {
+                    float diff = Float.parseFloat(((Element)waveContents.item(i)).getAttribute("dif"));
+                    for (int j = 0; j < Integer.parseInt(waveContents.item(i).getTextContent()); ++j)
+                    {
+                        Enemy e = new ArmoredEnemy();
+                        
+                        e.setHealth(e.health*diff);
+                        e.bounty *= diff;
+                        enemyQue.add(e);
+                    }
+                }
             }
             currentWave++;
         }
         else
         {
             //TODO: YOU BEAT THE LEVEL!!
+            levelBeaten = true;
         }
     }
     
@@ -96,6 +124,11 @@ public class EnemyWave {
             e.update(delta);
             if (e.isFinished())
             {
+                itr.remove();
+            }
+            else if (e.health <= 0)
+            {
+                Player.addPlasma(e.bounty);
                 itr.remove();
             }
         }
@@ -135,5 +168,9 @@ public class EnemyWave {
     public void remove(Enemy e)
     {
         deployedList.removeFirst();
+    }
+    public boolean isBeaten()
+    {
+        return levelBeaten;
     }
 }

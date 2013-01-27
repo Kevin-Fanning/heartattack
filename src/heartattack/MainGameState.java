@@ -24,19 +24,9 @@ public class MainGameState extends BasicGameState{
     
     public MainGameState(int id)
     {
-        try {
-            Level.loadLevel("level1");
-        } catch (SlickException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        towerList = new LinkedList<>();
-        
         stateID = id;
         
-        enemyWave = new EnemyWave();
-        
-        Player.towerList = towerList;
+
     }
     
     //Required for Slick2D. ignore it
@@ -49,9 +39,23 @@ public class MainGameState extends BasicGameState{
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
     {
+                try {
+            Level.loadLevel("level1");
+        } catch (SlickException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        towerList = new LinkedList<>();
         
+        
+        
+        enemyWave = new EnemyWave();
+        
+        Player.towerList = towerList;
         background = new Image("level1.png");
         BasicTower.loadImages("turret.png","base.png");
+        LaserTower.loadImages("turret.png","base.png");
+        CannonTower.loadImages("turret.png","base.png");
         Bullet.loadImage("bullet.png");
         Enemy.loadImage("germ.png");
         Player.init(towerList);   
@@ -63,7 +67,10 @@ public class MainGameState extends BasicGameState{
         InputController.update(gc.getInput());
 
         enemyWave.update(delta);
-        
+        if (enemyWave.isBeaten())
+        {
+            sbg.enterState(HeartAttack.MAIN_MENU_STATE);
+        }
         for (Tower i : towerList) {     //Update towers and check if the bullets hit anything
             i.aim(enemyWave.getEnemies());
             i.update(delta);
@@ -79,12 +86,6 @@ public class MainGameState extends BasicGameState{
                     if (b.boundingBox().intersects(e.boundingBox()))
                     {
                         e.damage(i.getDamage());
-                        if (e.getHealth() <= 0)
-                        {
-                            itr.remove();
-                            Player.addPlasma(e.getBounty());
-                            i.reacquire(enemyWave.getEnemies());
-                        }
                         i.removeBullet(b);
                     }
                 }
@@ -108,8 +109,8 @@ public class MainGameState extends BasicGameState{
     }   
     
     @Override
-    public void enter(GameContainer gc, StateBasedGame sbg)
+    public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException
     {
-
+        init(gc, sbg);
     }
 }

@@ -7,24 +7,9 @@ and open the template in the editor.
 
 <root>
     <Wave>
-        <Normal dif="1.0">10</Normal>
+        <Fast dif="1.0">4</Fast>
     </Wave>
     <Wave>
-        <Normal dif="1.5">15</Normal>
-    </Wave>
-    <Wave>
-        <Normal dif="2.0">15</Normal>
-    </Wave>
-    <Wave>
-        <Normal dif="2.0">15</Normal>
-    </Wave>
-    <Wave>
-        <Normal dif="2.5">15</Normal>
-    </Wave>
-    <Wave>
-        <Normal dif="2.5">15</Normal>
-    </Wave>
-    <Wave>
-        <Normal dif="30">1</Normal>
+        <Normal dif="1.5">4</Normal>
     </Wave>
 </root>

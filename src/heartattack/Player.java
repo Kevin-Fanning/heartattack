@@ -26,11 +26,13 @@ import org.w3c.dom.Element;
 public class Player {
     public enum TowerType {
         BASIC,
+        LASER,
+        CANNON,
         SPLASH,
         FREEZE
     }
 
-    public static Image[] towerTexes = new Image[1];    //images for the store thumbnails
+    public static Image[] towerTexes = new Image[3];    //images for the store thumbnails
     
     protected static int redBlood = 20;      //the amount of red blood the player has
     protected static int whiteBlood = 0;    //.. white blood..
@@ -54,24 +56,41 @@ public class Player {
     protected static DocumentBuilder db;
     protected static File xmlFile;
     protected static Element basicTowerEl;
+    protected static Element laserTowerEl;
+    protected static Element cannonTowerEl;
     
     public static void init(LinkedList<Tower> towerList) throws SlickException
     {
+        plasma = 200;
+        redBlood = 20;
+        
         StoreIcon basicTowerIcon = new StoreIcon(TowerType.BASIC);
         basicTowerIcon.setTooltip("A basic shooter tower. \n100 Plasma");
+        basicTowerIcon.init("base.png");
+        basicTowerIcon.position = new Vector2(100,550);
         icons.add(basicTowerIcon);
         
+        StoreIcon laserTowerIcon = new StoreIcon(TowerType.LASER);
+        laserTowerIcon.setTooltip("Laser tower. \n300 Plasma");
+        laserTowerIcon.init("base.png");
+        laserTowerIcon.position = new Vector2(150,550);
+        icons.add(laserTowerIcon);
+        
+        StoreIcon cannonTowerIcon = new StoreIcon(TowerType.CANNON);
+        cannonTowerIcon.setTooltip("Infrequent power\n250 Plasma");
+        cannonTowerIcon.init("base.png");
+        cannonTowerIcon.position = new Vector2(200,550);
+        icons.add(cannonTowerIcon);
         
         Player.towerList = towerList;
         
         towerTexes[0] = BasicTower.base;
+        towerTexes[1] = LaserTower.base;
+        towerTexes[2] = CannonTower.base;
+        
         layerMask = Level.getLayerMask();
         
-        for (StoreIcon i : icons)
-        {
-            i.init("base.png");
-            i.position = new Vector2(50, 550);
-        }
+        
         heldPosition = new Vector2();
         
         try {
@@ -86,6 +105,17 @@ public class Player {
                 if ("Basic".equals(((Element)nl.item(i)).getAttribute("name")))
                 {
                     basicTowerEl = (Element)nl.item(i);
+                    BasicTower.plasmaCost = Integer.parseInt(basicTowerEl.getElementsByTagName("plasmaCost").item(0).getTextContent());
+                }
+                else if ("Laser".equals(((Element)nl.item(i)).getAttribute("name")))
+                {
+                    laserTowerEl = (Element)nl.item(i);
+                    LaserTower.plasmaCost = Integer.parseInt(laserTowerEl.getElementsByTagName("plasmaCost").item(0).getTextContent());
+                }
+                else if ("Cannon".equals(((Element)nl.item(i)).getAttribute("name")))
+                {
+                    cannonTowerEl = (Element)nl.item(i);
+                    CannonTower.plasmaCost = Integer.parseInt(cannonTowerEl.getElementsByTagName("plasmaCost").item(0).getTextContent());
                 }
             }
         }
@@ -119,7 +149,6 @@ public class Player {
                             bt.range = Integer.parseInt(basicTowerEl.getElementsByTagName("range").item(0).getTextContent());
                             bt.fireRate = Integer.parseInt(basicTowerEl.getElementsByTagName("fireRate").item(0).getTextContent());
                             bt.damage = Integer.parseInt(basicTowerEl.getElementsByTagName("damage").item(0).getTextContent());
-                            BasicTower.plasmaCost = Integer.parseInt(basicTowerEl.getElementsByTagName("plasmaCost").item(0).getTextContent());
                             BasicTower.fireSpeed = Integer.parseInt(basicTowerEl.getElementsByTagName("fireSpeed").item(0).getTextContent());
                             bt.position = new Vector2(InputController.msPosition.x, InputController.msPosition.y);
                             towerList.add(bt);
@@ -127,6 +156,36 @@ public class Player {
                         }
                         break;
                     }
+                    case LASER:
+                    {
+                        LaserTower lt = new LaserTower();
+                        if (canPlace)
+                        {
+                            lt.range = Integer.parseInt(laserTowerEl.getElementsByTagName("range").item(0).getTextContent());
+                            lt.fireRate = Integer.parseInt(laserTowerEl.getElementsByTagName("fireRate").item(0).getTextContent());
+                            lt.damage = Integer.parseInt(laserTowerEl.getElementsByTagName("damage").item(0).getTextContent());
+                            LaserTower.fireSpeed = Integer.parseInt(laserTowerEl.getElementsByTagName("fireSpeed").item(0).getTextContent());
+                            lt.position = new Vector2(InputController.msPosition.x, InputController.msPosition.y);
+                            towerList.add(lt);
+                            plasma -= LaserTower.plasmaCost;
+                        }
+                        break;
+                    }
+                    case CANNON:
+                    {
+                        CannonTower ct = new CannonTower();
+                        if (canPlace)
+                        {
+                            ct.range = Integer.parseInt(cannonTowerEl.getElementsByTagName("range").item(0).getTextContent());
+                            ct.fireRate = Integer.parseInt(cannonTowerEl.getElementsByTagName("fireRate").item(0).getTextContent());
+                            ct.damage = Integer.parseInt(cannonTowerEl.getElementsByTagName("damage").item(0).getTextContent());
+                            CannonTower.fireSpeed = Integer.parseInt(cannonTowerEl.getElementsByTagName("fireSpeed").item(0).getTextContent());
+                            ct.position = new Vector2(InputController.msPosition.x, InputController.msPosition.y);
+                            towerList.add(ct);
+                            plasma -= CannonTower.plasmaCost;
+                        }
+                        break;
+                    }  
                 }
             }
             canPlace = true;
@@ -142,6 +201,14 @@ public class Player {
                 case BASIC:
                 {
                     if (plasma < BasicTower.plasmaCost)
+                    {
+                        canPlace = false;
+                    }
+                    break;
+                }
+                case LASER:
+                {
+                    if (plasma < LaserTower.plasmaCost)
                     {
                         canPlace = false;
                     }
@@ -221,6 +288,31 @@ public class Player {
                     {
                         towerTexes[0].draw(heldPosition.x, heldPosition.y, new Color(255, 50,50,127));//Red tint and half transparency
                     }
+                    break;
+                }
+                case LASER:
+                {
+                    if (canPlace)
+                    {
+                        towerTexes[1].draw(heldPosition.x, heldPosition.y, new Color(255,255,255,127));
+                    }
+                    else
+                    {
+                        towerTexes[1].draw(heldPosition.x, heldPosition.y, new Color(255,50,50,127));
+                    }
+                    break;
+                }
+                case CANNON:
+                {
+                    if (canPlace)
+                    {
+                        towerTexes[2].draw(heldPosition.x, heldPosition.y, new Color(255,255,255,127));
+                    }
+                    else
+                    {
+                        towerTexes[2].draw(heldPosition.x, heldPosition.y, new Color(255,50,50,127));
+                    }
+                    break;
                 }
             }
         }
