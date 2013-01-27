@@ -2,13 +2,16 @@
 package heartattack;
 
 import java.util.Iterator;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.*;
 import java.util.LinkedList;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 /**
  *
  * @author Kevin
@@ -21,6 +24,11 @@ public class MainGameState extends BasicGameState{
     
     
     private Image background;
+    
+    private Sound ekg;
+    private Music bgMusic;
+    
+    private boolean justLost;
     
     public MainGameState(int id)
     {
@@ -39,25 +47,25 @@ public class MainGameState extends BasicGameState{
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
     {
-                try {
-            Level.loadLevel("level1");
-        } catch (SlickException e)
-        {
-            System.out.println(e.getMessage());
-        }
+        ekg = new Sound("heartBeat.wav");
+
+        bgMusic = new Music("Controlled Chaos.ogg");
+
+        
+        justLost = false;
+        
         towerList = new LinkedList<>();
-        
-        
-        
+ 
         enemyWave = new EnemyWave();
-        
+        enemyWave.loadLevel(Player.levelName);
         Player.towerList = towerList;
         background = new Image("level1.png");
         BasicTower.loadImages("turret.png","base.png");
-        LaserTower.loadImages("turret.png","base.png");
-        CannonTower.loadImages("turret.png","base.png");
-        FreezeTower.loadImage("base.png");
+        LaserTower.loadImages("pturret.png","pbase.png");
+        CannonTower.loadImages("gturret.png","gbase.png");
+        FreezeTower.loadImage("bbase.png");
         Bullet.loadImage("bullet.png");
+        Mine.loadImage("mine.png");
         Enemy.loadImage("germ.png");
         FastEnemy.loadImage("ameoba");
         ArmoredEnemy.loadImages("egg");
@@ -70,9 +78,19 @@ public class MainGameState extends BasicGameState{
         InputController.update(gc.getInput());
 
         enemyWave.update(delta);
-        if (enemyWave.isBeaten())
+        if (enemyWave.isBeaten() && InputController.input.isKeyPressed(Input.KEY_SPACE))
         {
             sbg.enterState(HeartAttack.MAIN_MENU_STATE);
+        }
+        if (Player.redBlood <= 0 && InputController.input.isKeyPressed(Input.KEY_SPACE))
+        {
+            sbg.enterState(HeartAttack.MAIN_MENU_STATE);
+        }
+        if (Player.redBlood <= 0 && !ekg.playing() && justLost == false)
+        {
+            bgMusic.fade(3000, 0, true);
+            ekg.play();
+            justLost = true;
         }
         for (Tower i : towerList) {     //Update towers and check if the bullets hit anything
             i.aim(enemyWave.getEnemies());
@@ -109,11 +127,29 @@ public class MainGameState extends BasicGameState{
         }
         
         Player.render(g);
+        
+        if (enemyWave.isBeaten())
+        {
+            g.setColor(new Color(0,0,0,80));
+            g.fillRect(0,0,gc.getWidth(), gc.getHeight());
+            g.setColor(new Color(255,255,255,255));
+            g.drawString("YOU WON", 350, 300);
+        }
+        if (Player.redBlood <= 0)
+        {
+            g.setColor(new Color(0,0,0,200));
+            g.fillRect(0,0,gc.getWidth(),gc.getHeight());
+            g.setColor(new Color(255,255,255,255));
+            g.drawString("We lost another one...", 350, 300);
+        }
     }   
     
     @Override
     public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException
     {
         init(gc, sbg);
+        if (!bgMusic.playing()) {
+            bgMusic.play();
+        }
     }
 }

@@ -58,6 +58,14 @@ public class Player {
     protected static Element cannonTowerEl;
     protected static Element freezeTowerEl;
     
+    public static String levelName;
+    
+    public static void loadLevel() throws SlickException
+    {
+        Level.loadLevel(levelName);
+        
+    }
+    
     public static void init(LinkedList<Tower> towerList) throws SlickException
     {
         plasma = 1200;
@@ -71,19 +79,19 @@ public class Player {
         
         StoreIcon laserTowerIcon = new StoreIcon(TowerType.LASER);
         laserTowerIcon.setTooltip("Laser tower \n300 Plasma");
-        laserTowerIcon.init("base.png");
+        laserTowerIcon.init("pbase.png");
         laserTowerIcon.position = new Vector2(150,550);
         icons.add(laserTowerIcon);
         
         StoreIcon cannonTowerIcon = new StoreIcon(TowerType.CANNON);
         cannonTowerIcon.setTooltip("Large cannon\n250 Plasma");
-        cannonTowerIcon.init("base.png");
+        cannonTowerIcon.init("gbase.png");
         cannonTowerIcon.position = new Vector2(200,550);
         icons.add(cannonTowerIcon);
         
         StoreIcon freezeTowerIcon = new StoreIcon(TowerType.FREEZE);
         freezeTowerIcon.setTooltip("Slows enemies\n350 Plasma");
-        freezeTowerIcon.init("base.png");
+        freezeTowerIcon.init("bbase.png");
         freezeTowerIcon.position = new Vector2(250, 550);
         icons.add(freezeTowerIcon);
         

@@ -10,12 +10,12 @@ import org.newdawn.slick.SlickException;
  * @author Kevin
  */
 public class Bullet extends Sprite {
-    private static Image texture;
-    @Override
-    public void init(String path) throws SlickException
-    {
-        super.init(path);
-    }
+    protected static Image texture;
+//    @Override
+//    public void init(String path) throws SlickException
+//    {
+//        super.init(path);
+//    }
     
     public static void loadImage(String path) throws SlickException
     {

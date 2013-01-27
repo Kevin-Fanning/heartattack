@@ -7,6 +7,7 @@ import java.util.ArrayDeque;
 import java.util.LinkedList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Sound;
 
 /**
  *
@@ -26,7 +27,7 @@ public class BasicTower extends Tower {
     protected ArrayDeque<Bullet> bulletQue;
     protected ArrayDeque<Bullet> activeBullets;
     
-    
+    protected Sound fireSound;
     
     public BasicTower()
     {
@@ -47,6 +48,8 @@ public class BasicTower extends Tower {
         lastFire = System.currentTimeMillis();
 
         ownTurret = turret.getScaledCopy(1);
+        
+        try {fireSound = new Sound("src/shot.wav");} catch (Exception e) {System.out.println(e);}
     }
     
     @Override
@@ -83,7 +86,7 @@ public class BasicTower extends Tower {
             }
             else  // shift direction towards the target
             {
-                aimDirection = position.getDirection(target.position);
+                aimDirection = position.getDirection(target.position.add(target.velocity.normalize().times(2.0f)));
                 ownTurret.setRotation(aimDirection.toDegrees());
 
                 //If the target is out of range, reset
@@ -108,6 +111,7 @@ public class BasicTower extends Tower {
         {
             Bullet temp = bulletQue.poll();
             if (temp != null) {
+                fireSound.play();
                 temp.position = new Vector2(this.position.x+this.width/2, this.position.y+this.height/2);
                 temp.velocity = new Vector2(aimDirection.times(fireSpeed));
                 

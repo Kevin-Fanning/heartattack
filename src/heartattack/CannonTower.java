@@ -7,6 +7,7 @@ import java.util.ArrayDeque;
 import java.util.LinkedList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Sound;
 
 /**
  *
@@ -27,7 +28,7 @@ public class CannonTower extends Tower {
     protected ArrayDeque<Bullet> bulletQue;
     protected ArrayDeque<Bullet> activeBullets;
     
-    
+    protected Sound fireSound;
     
     public CannonTower()
     {
@@ -43,11 +44,13 @@ public class CannonTower extends Tower {
         
         for (int i = 0; i < 20; i++)
         {
-            bulletQue.addLast(new Bullet());
+            bulletQue.addLast(new Mine());
         }
         lastFire = System.currentTimeMillis();
 
         ownTurret = turret.getScaledCopy(1);
+        
+        try {fireSound = new Sound("src/cannon.wav");} catch (Exception e) {System.out.println(e);}
     }
     
     @Override
@@ -109,6 +112,7 @@ public class CannonTower extends Tower {
         {
             Bullet temp = bulletQue.poll();
             if (temp != null) {
+                fireSound.play();
                 temp.position = new Vector2(this.position.x+this.width/2, this.position.y+this.height/2);
                 temp.velocity = new Vector2(aimDirection.times(fireSpeed));
                 

@@ -7,6 +7,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 /**
  *
  * @author Kevin
@@ -32,16 +33,11 @@ public class Enemy extends Sprite {
     
     protected static Image texture;
     
+    protected Sound splat;
+    
     public Enemy()
     {
         super();
-//        curWaypoint = waypoints.getFirst();
-//        position = new Vector2(curWaypoint.x - width/2, curWaypoint.y - height/2);
-//        wayItr = waypoints.listIterator(1);
-//        curWaypoint = wayItr.next();
-//        
-//        velocity = position.getDirection(curWaypoint).times(speed);
-        
         health = 100;
         maxHealth = 100;
         
@@ -50,6 +46,7 @@ public class Enemy extends Sprite {
         height = texture.getHeight();
         
         isSlowed = false;
+        try {splat = new Sound("src/splat.wav");} catch (Exception e) {System.out.println(e);}
     }
     
     public static void loadImage(String path) throws SlickException
@@ -95,7 +92,7 @@ public class Enemy extends Sprite {
     public void damage(int amount)
     {
         health -= amount;
-        if (health <= 0) { alive = false;}
+        if (health <= 0) { alive = false; splat.play();}
     }
     
     public int getHealth()

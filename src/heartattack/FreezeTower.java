@@ -9,6 +9,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 
 public class FreezeTower extends Tower
 {
@@ -20,6 +21,8 @@ public class FreezeTower extends Tower
     private float fireSize;
     private int alpha;
     
+    protected Sound fireSound;
+    
     public FreezeTower()
     {
         super();
@@ -29,6 +32,8 @@ public class FreezeTower extends Tower
         
         width = base.getWidth();
         height = base.getHeight();
+        
+        try {fireSound = new Sound("src/ice.wav");} catch (Exception e) {System.out.println(e);}
     }
     
     public static void loadImage(String path) throws SlickException
@@ -48,6 +53,7 @@ public class FreezeTower extends Tower
                     e.damage(damage);
                     e.slow(1800);
                     isFiring = true;
+                    fireSound.play();
                     lastFire = System.currentTimeMillis();
                 }
             }

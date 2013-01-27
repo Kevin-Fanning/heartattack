@@ -7,6 +7,7 @@ import java.util.ArrayDeque;
 import java.util.LinkedList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Sound;
 
 /**
  *
@@ -24,7 +25,7 @@ public class LaserTower extends Tower {
     
     protected static float fireSpeed;
     
-    
+    protected Sound fireSound;
     
     public LaserTower()
     {
@@ -38,11 +39,14 @@ public class LaserTower extends Tower {
         lastFire = System.currentTimeMillis();
 
         ownTurret = turret.getScaledCopy(1);
+        
+        try {fireSound = new Sound("src/laser.wav");} catch (Exception e) {System.out.println(e);}
     }
     
     @Override
     public void reacquire(LinkedList<Enemy> enemyList)
     {
+        fireSound.stop();
         enabled = false;
         float minDistance = range*range;
         for (Enemy e: enemyList)
@@ -55,6 +59,7 @@ public class LaserTower extends Tower {
                 minDistance = curDistance;
                 aimDirection = position.getDirection(target.position);
                 ownTurret.setRotation(aimDirection.toDegrees());
+                fireSound.play();
             }
         }
     }

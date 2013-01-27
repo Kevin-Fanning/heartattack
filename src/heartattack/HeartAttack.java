@@ -2,6 +2,8 @@
 package heartattack;
 
 
+import java.io.File;
+import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.BasicGameState;
@@ -34,7 +36,8 @@ public class HeartAttack extends StateBasedGame {
     
     public static void main(String[] args) throws SlickException
     {
-        
+        System.setProperty("org.lwjgl.librarypath", new File(new File(System.getProperty("user.dir"), "native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
+        System.setProperty("net.java.games.input.librarypath", System.getProperty("org.lwjgl.librarypath"));
         
         HeartAttack h = new HeartAttack();
         AppGameContainer app = new AppGameContainer(h);

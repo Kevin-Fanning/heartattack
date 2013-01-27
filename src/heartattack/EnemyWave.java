@@ -38,11 +38,10 @@ public class EnemyWave {
         enemyQue = new LinkedList<>();
         deployedList = new LinkedList<>();
         waypoints = new LinkedList<>();
-        loadLevel("src/level1.xml");
         
         delayTime = 2000;
         lastRelease = System.currentTimeMillis();
-        currentWave = 1;
+        currentWave = 0;
         levelBeaten = false;
     }
     private void getWaypoints()
@@ -117,7 +116,7 @@ public class EnemyWave {
         {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
-            File xmlFile = new File(filename);
+            File xmlFile = new File("src/" + filename + ".xml");
             Document doc = db.parse(xmlFile);
             doc.getDocumentElement().normalize();
             waveNodes = doc.getElementsByTagName("Wave");
