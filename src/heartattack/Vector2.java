@@ -79,9 +79,9 @@ public class Vector2 {
     //Returns the vector in radians from (1,0)
     public float toDegrees()
     {
-        float temp = (float)((Math.acos(this.dot(new Vector2(1,0))))*(180/Math.PI));
+        float temp = (float)(Math.acos(this.x)*(180/Math.PI));
         if (y <=0) {
-            return temp * -1;
+            return 360 - temp;
         } else {
             return temp;
         }

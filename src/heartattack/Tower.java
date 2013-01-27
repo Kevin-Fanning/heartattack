@@ -15,14 +15,15 @@ public abstract class Tower extends Sprite{
     protected float fireRate;   //How fast the tower fires
     protected int damage;     //The damage to apply on a hit
     
-    protected boolean enabled;
-    protected enum states 
-    {
-        PLACING,
-        ACTIVE
-    }
+    protected int plasmaCost = 0;   //How much the tower costs
+    protected int redCost = 0;
+    protected int whiteCost = 0;
+    protected int sellBack = 0;
     
-    protected states currentState;
+    protected boolean enabled;
+    
+    protected boolean selected;
+
     
     public Tower()
     {
@@ -30,12 +31,17 @@ public abstract class Tower extends Sprite{
         fireRate = 0;
         damage = 0;
         enabled = false;
-        currentState = states.PLACING;
+        selected = false;
     }
     
-    //what do when you place it
-    public abstract void place();
-    
+    public void select()
+    {
+        selected = true;
+    }
+    public void deselect()
+    {
+        selected = false;
+    }
     
     //aim at the closest baddie
     public abstract void aim(LinkedList<Enemy> enemyList);
@@ -46,10 +52,6 @@ public abstract class Tower extends Sprite{
     //Get rid of the tower
     public abstract void sell();
     
-    //Initialize the tower with 2 images. a turret and a base
-    //init(String) is for one picture towers
-    public abstract void init2(String turretPath, String basePath) throws SlickException;
-
     //Use this to grab bullets for collision detection
     public abstract ArrayDeque<Bullet> getBullets();
     

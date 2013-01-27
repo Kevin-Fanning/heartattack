@@ -12,7 +12,9 @@ import org.newdawn.slick.Graphics;
  * @author Kevin
  */
 public class BasicTower extends Tower {
-    protected Image turret;
+    protected static Image turret;
+    protected static Image base;
+    protected Image ownTurret;
     protected Vector2 aimDirection;
     protected Enemy target;
     
@@ -27,6 +29,9 @@ public class BasicTower extends Tower {
     public BasicTower()
     {
         super();
+        
+        width = base.getWidth();
+        height = base.getHeight();
         
         aimDirection = new Vector2(1.0f,0.0f);
         
@@ -43,15 +48,11 @@ public class BasicTower extends Tower {
         
         range = 200;
         damage = 7;
+        
+        plasmaCost = 100;
+        
+        ownTurret = turret.getScaledCopy(1);
     }
-    
-    //what do when you place it
-    @Override
-    public void place()
-    {
-        enabled = true;
-    }
-    
     
     @Override
     public void reacquire(LinkedList<Enemy> enemyList)
@@ -66,6 +67,8 @@ public class BasicTower extends Tower {
                         target = e;
                         enabled = true;
                         minDistance = curDistance;
+                        aimDirection = position.getDirection(target.position);
+                        ownTurret.setRotation(aimDirection.toDegrees());
                     }
                 }
     }
@@ -83,10 +86,10 @@ public class BasicTower extends Tower {
                 reacquire(enemyList);
                 
             }
-            else // shift direction towards the target
+            else  // shift direction towards the target
             {
                 aimDirection = position.getDirection(target.position);
-                turret.setRotation(aimDirection.toDegrees());
+                ownTurret.setRotation(aimDirection.toDegrees());
 
                 //If the target is out of range, reset
                 if (position.getSquareDistance(target.position) > range*range)
@@ -105,7 +108,7 @@ public class BasicTower extends Tower {
     @Override
     public void fire()
     {
-        if (enabled && System.currentTimeMillis() - lastFire > fireRate && aimDirection != new Vector2(1.0f,0.0f))
+        if (enabled && System.currentTimeMillis() - lastFire > fireRate)
         {
             Bullet temp = bulletQue.poll();
             if (temp != null) {
@@ -127,24 +130,16 @@ public class BasicTower extends Tower {
     }
 
     //Initialize the tower with 2 images. a turret and a base
-    //init(String) is for one picture towers
-    @Override
-    public void init2(String turretPath,String basePath) throws SlickException
+    public static void init2(String turretPath,String basePath) throws SlickException
     {
-        super.init(basePath);
+        base = new Image(basePath);
         turret = new Image(turretPath);
         turret.setCenterOfRotation(turret.getWidth()/2, turret.getHeight()/2);
-        for (Bullet i : bulletQue) 
-        {
-            i.init("bullet.png");
-        }
     }
     
     @Override
     public void update(int delta)
     {
-        if (currentState == states.ACTIVE)
-        {
             for (Bullet i : activeBullets) 
             {
                 i.update(delta);
@@ -154,29 +149,24 @@ public class BasicTower extends Tower {
                     activeBullets.remove(i);
                 }
             }
-        } else if (currentState == states.PLACING)
-        {
-            position = InputController.msPosition;
-        }
     }
     
     @Override
     public void render(Graphics g)
     {
-        if (currentState == states.ACTIVE)
-            {
-            super.render(g);
-            turret.draw((int)position.x, (int)position.y);
-            for (Bullet i : activeBullets) 
-            {
-                i.render(g);
-            }
-        } else if (currentState == states.PLACING)
+        if (selected)
         {
-            texture.draw((int)position.x, (int)position.y, new Color(255,255,255,127));
-            turret.draw((int)position.x, (int)position.y, new Color(255,255,255,127));
+            g.setColor(new Color(0,200,0,80));
+            g.fillOval(position.x-range + width/2, position.y-range + height/2, range*2, range*2);
         }
-        //g.drawOval(position.x-range + width/2, position.y-range + height/2, range*2, range*2);
+        base.draw((int)position.x, (int)position.y);
+        for (Bullet i : activeBullets) 
+        {
+            i.render(g);
+        }
+        ownTurret.draw((int)position.x, (int)position.y);
+        
+        
     }
     
     //return an arrayque of the active bullets

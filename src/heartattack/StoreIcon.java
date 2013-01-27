@@ -5,38 +5,36 @@ package heartattack;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import java.awt.Font;
-import org.newdawn.slick.TrueTypeFont;
 
 /**
  *
  * @author Kevin
  */
 public class StoreIcon extends Sprite {
-    private String tooltipText;
+    private String tooltipText = "";
     private boolean displayTooltip = false;
-    
-    private Font font;
-    private TrueTypeFont uFont;
+    private Player.TowerType towerType;
     
     private int cost;
-    public StoreIcon()
+    public StoreIcon(Player.TowerType towerType)
     {
         super();
-        font = new Font("Arial Bold", Font.PLAIN, 12);
-        uFont = new TrueTypeFont(font, true);
+        this.towerType = towerType;
     }
     public StoreIcon(float x, float y)
     {
         super();
         position.x = x; position.y = y;
     }
+    
+    //Displays a tooltip
     public void tooltip(Graphics g)
     {
         g.setColor(new Color(230,220,150,255));
         g.fillRect(InputController.input.getMouseX(), InputController.input.getMouseY()-50, 200, 50);
         g.setColor(Color.black);
+        g.drawString(tooltipText, InputController.msPosition.x, InputController.msPosition.y-50);
+        //TODO: write some text
     }
     
     @Override
@@ -52,5 +50,14 @@ public class StoreIcon extends Sprite {
     public int getCost()
     {
         return cost;
+    }
+    public Player.TowerType getType()
+    {
+        return towerType;
+    }
+    
+    public void setTooltip(String text)
+    {
+        tooltipText = text;
     }
 }

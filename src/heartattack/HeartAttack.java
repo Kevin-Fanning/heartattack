@@ -34,11 +34,15 @@ public class HeartAttack extends StateBasedGame {
     
     public static void main(String[] args) throws SlickException
     {
+        
+        
         HeartAttack h = new HeartAttack();
         AppGameContainer app = new AppGameContainer(h);
         
         app.setDisplayMode(800,600, false);
         app.setMinimumLogicUpdateInterval(2);
+        
+        app.setShowFPS(false);
         
         app.start();
     }

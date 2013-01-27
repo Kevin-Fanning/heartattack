@@ -19,7 +19,6 @@ public class MainGameState extends BasicGameState{
     private EnemyWave enemyWave;
     private LinkedList<Tower> towerList;
     
-    private Player player;
     
     private Image background;
     
@@ -32,7 +31,7 @@ public class MainGameState extends BasicGameState{
         
         enemyWave = new EnemyWave();
         
-        player = new Player();
+        Player.towerList = towerList;
     }
     
     //Required for Slick2D. ignore it
@@ -46,14 +45,13 @@ public class MainGameState extends BasicGameState{
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
     {
         background = new Image("level1.png");
-
+        BasicTower.init2("turret.png","base.png");
+        Bullet.loadImage("bullet.png");
+        
         enemyWave.init();
         
-        for (Tower i: towerList){
-            i.init2("turret.png","base.png");
-        }
         
-        player.init();
+        Player.init(towerList);
     }
     
     @Override
@@ -102,7 +100,7 @@ public class MainGameState extends BasicGameState{
                 }
             }
         }
-        player.update(delta);
+        Player.update(gc, delta);
     }
     
     @Override
@@ -116,7 +114,7 @@ public class MainGameState extends BasicGameState{
             i.render(g);
         }
         
-        player.render(g);
+        Player.render(g);
     }   
     
     @Override
