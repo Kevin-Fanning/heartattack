@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 /**
  *
  * @author Kevin
@@ -21,18 +23,12 @@ public class Enemy extends Sprite {
     protected float speed = 40;
     protected int bounty = 10;
     
+    protected static Image texture;
+    
     public Enemy()
     {
         super();
         waypoints = Level.getWaypoints();
-//        waypoints = new LinkedList<>();
-//        waypoints.add(new Vector2(-100,100));
-//        waypoints.add(new Vector2(600,100));
-//        waypoints.add(new Vector2(600, 300));
-//        waypoints.add(new Vector2(100,300));
-//        waypoints.add(new Vector2(100, 500));
-//        waypoints.add(new Vector2(900, 500));
-        
         curWaypoint = waypoints.getFirst();
         position = new Vector2(curWaypoint.x - width/2, curWaypoint.y - height/2);
         wayItr = waypoints.listIterator(1);
@@ -43,6 +39,14 @@ public class Enemy extends Sprite {
         health = 100;
         
         isFinished = false;
+        width = texture.getWidth();
+        height = texture.getHeight();
+    }
+    
+    public static void loadImage(String path) throws SlickException
+    {
+        texture = new Image(path);
+        
     }
     
     @Override

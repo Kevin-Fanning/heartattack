@@ -53,11 +53,8 @@ public class MainGameState extends BasicGameState{
         background = new Image("level1.png");
         BasicTower.loadImages("turret.png","base.png");
         Bullet.loadImage("bullet.png");
-        Player.init(towerList);
-        enemyWave.init();
-        
-        
-
+        Enemy.loadImage("germ.png");
+        Player.init(towerList);   
     }
     
     @Override

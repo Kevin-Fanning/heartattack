@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<root>
+    <Wave>
+        <Normal dif="20">1</Normal>
+    </Wave>
+    <Wave>
+        <Normal dif="1.5">15</Normal>
+    </Wave>
+    <Wave>
+        <Normal dif="2.0">15</Normal>
+    </Wave>
+    <Wave>
+        <Normal dif="2.0">15</Normal>
+    </Wave>
+    <Wave>
+        <Normal dif="2.5">15</Normal>
+    </Wave>
+    <Wave>
+        <Normal dif="2.5">15</Normal>
+    </Wave>
+    <Wave>
+        <Normal dif="30">1</Normal>
+    </Wave>
+</root>

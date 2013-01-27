@@ -8,6 +8,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+//XML stuff
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
@@ -33,7 +34,7 @@ public class Player {
     
     protected static int redBlood = 20;      //the amount of red blood the player has
     protected static int whiteBlood = 0;    //.. white blood..
-    protected static int plasma = 200; //.. plasma ..
+    protected static int plasma = 1200; //.. plasma ..
     
     protected static TowerType heldType;    //The type of tower the player is holding
     protected static Vector2 heldPosition;  //Where the tower is held at before buying(mouse position)
