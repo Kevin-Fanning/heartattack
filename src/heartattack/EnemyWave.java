@@ -52,7 +52,9 @@ public class EnemyWave {
                     for (int j = 0; j < Integer.parseInt(waveContents.item(i).getTextContent()); ++j)
                     {
                         Enemy e = new Enemy();
-                        e.health *= diff;
+                        
+                        e.setHealth(e.health*diff);
+                        e.bounty *= diff;
                         enemyQue.add(e);
                     }
                 }

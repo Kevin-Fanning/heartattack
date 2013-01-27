@@ -7,7 +7,7 @@ and open the template in the editor.
 
 <root>
     <Wave>
-        <Normal dif="20">1</Normal>
+        <Normal dif="1.0">10</Normal>
     </Wave>
     <Wave>
         <Normal dif="1.5">15</Normal>

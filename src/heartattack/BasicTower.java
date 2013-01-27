@@ -8,8 +8,6 @@ import java.util.LinkedList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 /**
  *
  * @author Kevin
@@ -45,15 +43,8 @@ public class BasicTower extends Tower {
         {
             bulletQue.addLast(new Bullet());
         }
-        
-//        fireRate = 500;
         lastFire = System.currentTimeMillis();
-        
-//        range = 200;
-//        damage = 7;
-//        
-//        plasmaCost = 100;
-        
+
         ownTurret = turret.getScaledCopy(1);
     }
     
@@ -61,19 +52,19 @@ public class BasicTower extends Tower {
     public void reacquire(LinkedList<Enemy> enemyList)
     {
         enabled = false;
-                float minDistance = range*range;
-                for (Enemy e: enemyList)
-                {
-                    float curDistance = position.getSquareDistance(e.position);
-                    if (curDistance < minDistance)
-                    {
-                        target = e;
-                        enabled = true;
-                        minDistance = curDistance;
-                        aimDirection = position.getDirection(target.position);
-                        ownTurret.setRotation(aimDirection.toDegrees());
-                    }
-                }
+        float minDistance = range*range;
+        for (Enemy e: enemyList)
+        {
+            float curDistance = position.getSquareDistance(e.position);
+            if (curDistance < minDistance)
+            {
+                target = e;
+                enabled = true;
+                minDistance = curDistance;
+                aimDirection = position.getDirection(target.position);
+                ownTurret.setRotation(aimDirection.toDegrees());
+            }
+        }
     }
     
     //aim at the closest baddie. stay on target until they leave range.
@@ -97,6 +88,7 @@ public class BasicTower extends Tower {
                 //If the target is out of range, reset
                 if (position.getSquareDistance(target.position) > range*range)
                 {
+                    target = null;
                     reacquire(enemyList);
                 }
             }

@@ -19,6 +19,7 @@ public class Enemy extends Sprite {
     public boolean alive = true;
     
     protected int health;
+    protected int maxHealth;
     
     protected float speed = 40;
     protected int bounty = 10;
@@ -37,6 +38,7 @@ public class Enemy extends Sprite {
         velocity = position.getDirection(curWaypoint).times(speed);
         
         health = 100;
+        maxHealth = 100;
         
         isFinished = false;
         width = texture.getWidth();
@@ -71,7 +73,7 @@ public class Enemy extends Sprite {
     {
         texture.drawCentered((int)position.x,(int)position.y);
         g.setColor(Color.green);
-        g.fillRect(position.x-width/2, position.y-height/2, health/2, 10.0f);
+        g.fillRect(position.x-width/2, position.y-height/2-10, health/((float)maxHealth)*width, 10.0f);
     }
     
     public void damage(int amount)
@@ -101,5 +103,10 @@ public class Enemy extends Sprite {
     public int getBounty()
     {
         return bounty;
+    }
+    public void setHealth(float newHealth)
+    {
+        health = (int)newHealth;
+        maxHealth = health;
     }
 }
