@@ -26,6 +26,9 @@ public class EnemyWave {
     
     protected int currentWave;
     protected NodeList waveNodes;
+    protected NodeList waypointNodes;
+    
+    protected LinkedList<Vector2> waypoints;
     
     protected boolean levelBeaten = false;
     
@@ -34,6 +37,7 @@ public class EnemyWave {
     {
         enemyQue = new LinkedList<>();
         deployedList = new LinkedList<>();
+        waypoints = new LinkedList<>();
         loadLevel("src/level1.xml");
         
         delayTime = 2000;
@@ -41,7 +45,16 @@ public class EnemyWave {
         currentWave = 1;
         levelBeaten = false;
     }
-    
+    private void getWaypoints()
+    {
+        for (int i = 0; i < waypointNodes.getLength(); ++i)
+        {
+            Element wayContents = (Element)waypointNodes.item(i);
+            int x = Integer.parseInt(wayContents.getElementsByTagName("x").item(0).getTextContent());
+            int y = Integer.parseInt(wayContents.getElementsByTagName("y").item(0).getTextContent());
+            waypoints.add(new Vector2(x,y));
+        }
+    }
     private void fillQue()
     {
         if (currentWave < waveNodes.getLength())
@@ -58,6 +71,7 @@ public class EnemyWave {
                         
                         e.setHealth(e.health*diff);
                         e.bounty *= diff;
+                        e.setWaypoints(waypoints);
                         enemyQue.add(e);
                     }
                 }
@@ -70,6 +84,7 @@ public class EnemyWave {
                         
                         e.setHealth(e.health*diff);
                         e.bounty *= diff;
+                        e.setWaypoints(waypoints);
                         enemyQue.add(e);
                     }
                 }
@@ -82,6 +97,7 @@ public class EnemyWave {
                         
                         e.setHealth(e.health*diff);
                         e.bounty *= diff;
+                        e.setWaypoints(waypoints);
                         enemyQue.add(e);
                     }
                 }
@@ -105,6 +121,8 @@ public class EnemyWave {
             Document doc = db.parse(xmlFile);
             doc.getDocumentElement().normalize();
             waveNodes = doc.getElementsByTagName("Wave");
+            waypointNodes = doc.getElementsByTagName("WayPoint");
+            getWaypoints();
             fillQue();
         }
         catch (Exception e)
@@ -129,6 +147,7 @@ public class EnemyWave {
             else if (e.health <= 0)
             {
                 Player.addPlasma(e.bounty);
+                e.alive = false;
                 itr.remove();
             }
         }

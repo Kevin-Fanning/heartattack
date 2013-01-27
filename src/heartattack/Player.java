@@ -28,15 +28,13 @@ public class Player {
         BASIC,
         LASER,
         CANNON,
-        SPLASH,
         FREEZE
     }
 
-    public static Image[] towerTexes = new Image[3];    //images for the store thumbnails
+    public static Image[] towerTexes = new Image[4];    //images for the store thumbnails
     
-    protected static int redBlood = 20;      //the amount of red blood the player has
-    protected static int whiteBlood = 0;    //.. white blood..
-    protected static int plasma = 200; //.. plasma ..
+    protected static int redBlood;      //the amount of red blood the player has
+    protected static int plasma; //.. plasma ..
     
     protected static TowerType heldType;    //The type of tower the player is holding
     protected static Vector2 heldPosition;  //Where the tower is held at before buying(mouse position)
@@ -58,35 +56,43 @@ public class Player {
     protected static Element basicTowerEl;
     protected static Element laserTowerEl;
     protected static Element cannonTowerEl;
+    protected static Element freezeTowerEl;
     
     public static void init(LinkedList<Tower> towerList) throws SlickException
     {
-        plasma = 200;
+        plasma = 1200;
         redBlood = 20;
         
         StoreIcon basicTowerIcon = new StoreIcon(TowerType.BASIC);
-        basicTowerIcon.setTooltip("A basic shooter tower. \n100 Plasma");
+        basicTowerIcon.setTooltip("A basic shooter tower \n100 Plasma");
         basicTowerIcon.init("base.png");
         basicTowerIcon.position = new Vector2(100,550);
         icons.add(basicTowerIcon);
         
         StoreIcon laserTowerIcon = new StoreIcon(TowerType.LASER);
-        laserTowerIcon.setTooltip("Laser tower. \n300 Plasma");
+        laserTowerIcon.setTooltip("Laser tower \n300 Plasma");
         laserTowerIcon.init("base.png");
         laserTowerIcon.position = new Vector2(150,550);
         icons.add(laserTowerIcon);
         
         StoreIcon cannonTowerIcon = new StoreIcon(TowerType.CANNON);
-        cannonTowerIcon.setTooltip("Infrequent power\n250 Plasma");
+        cannonTowerIcon.setTooltip("Large cannon\n250 Plasma");
         cannonTowerIcon.init("base.png");
         cannonTowerIcon.position = new Vector2(200,550);
         icons.add(cannonTowerIcon);
+        
+        StoreIcon freezeTowerIcon = new StoreIcon(TowerType.FREEZE);
+        freezeTowerIcon.setTooltip("Slows enemies\n350 Plasma");
+        freezeTowerIcon.init("base.png");
+        freezeTowerIcon.position = new Vector2(250, 550);
+        icons.add(freezeTowerIcon);
         
         Player.towerList = towerList;
         
         towerTexes[0] = BasicTower.base;
         towerTexes[1] = LaserTower.base;
         towerTexes[2] = CannonTower.base;
+        towerTexes[3] = FreezeTower.base;
         
         layerMask = Level.getLayerMask();
         
@@ -116,6 +122,11 @@ public class Player {
                 {
                     cannonTowerEl = (Element)nl.item(i);
                     CannonTower.plasmaCost = Integer.parseInt(cannonTowerEl.getElementsByTagName("plasmaCost").item(0).getTextContent());
+                }
+                else if ("Freeze".equals(((Element)nl.item(i)).getAttribute("name")))
+                {
+                    freezeTowerEl = (Element)nl.item(i);
+                    FreezeTower.plasmaCost = Integer.parseInt(cannonTowerEl.getElementsByTagName("plasmaCost").item(0).getTextContent());
                 }
             }
         }
@@ -186,8 +197,23 @@ public class Player {
                         }
                         break;
                     }  
+                    case FREEZE:
+                    {
+                        FreezeTower ft = new FreezeTower();
+                        if (canPlace)
+                        {
+                            ft.range = Integer.parseInt(freezeTowerEl.getElementsByTagName("range").item(0).getTextContent());
+                            ft.fireRate = Integer.parseInt(freezeTowerEl.getElementsByTagName("fireRate").item(0).getTextContent());
+                            ft.damage = Integer.parseInt(freezeTowerEl.getElementsByTagName("damage").item(0).getTextContent());
+                            ft.position = new Vector2(InputController.msPosition.x, InputController.msPosition.y);
+                            towerList.add(ft);
+                            plasma -= FreezeTower.plasmaCost;
+                        }
+                        break;
+                    } 
                 }
             }
+            //Is this a valid place to put a tower?
             canPlace = true;
             for (Tower t: towerList)
             {
@@ -212,7 +238,24 @@ public class Player {
                     {
                         canPlace = false;
                     }
+                    break;
                 }
+                case CANNON:
+                {
+                    if (plasma < CannonTower.plasmaCost)
+                    {
+                        canPlace = false;
+                    }
+                    break;
+                }  
+                case FREEZE:
+                {
+                    if (plasma < FreezeTower.plasmaCost)
+                    {
+                        canPlace = false;
+                    }
+                    break;
+                } 
             }
             //TODO: if tower is not on the walls, canPlace = false
             Color curColor = layerMask.getColor((int)InputController.msPosition.x, (int)InputController.msPosition.y);
@@ -263,16 +306,18 @@ public class Player {
     {
         //Display the currencies
         g.setColor(Color.gray);
-        g.fillRect(10,10,380,20);
+        g.fillRect(10,10,260,20);
         g.setColor(Color.yellow);
         g.drawString("Plasma: " + plasma, 20, 12);
         g.setColor(Color.red);
         g.drawString("Red Blood: " + redBlood, 140, 12);
-        g.setColor(Color.white);
-        g.drawString("White Blood: " + whiteBlood, 260, 12);
         for (StoreIcon i: icons)
         {
             i.render(g);
+        }
+        for (StoreIcon i: icons)
+        {
+            i.postRender(g);
         }
         if (isBuying)
         {
@@ -311,6 +356,18 @@ public class Player {
                     else
                     {
                         towerTexes[2].draw(heldPosition.x, heldPosition.y, new Color(255,50,50,127));
+                    }
+                    break;
+                }
+                case FREEZE:
+                {
+                    if (canPlace)
+                    {
+                        towerTexes[3].draw(heldPosition.x, heldPosition.y, new Color(255,255,255,127));
+                    }
+                    else
+                    {
+                        towerTexes[3].draw(heldPosition.x, heldPosition.y, new Color(255,50,50,127));
                     }
                     break;
                 }

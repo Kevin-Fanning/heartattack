@@ -56,8 +56,11 @@ public class MainGameState extends BasicGameState{
         BasicTower.loadImages("turret.png","base.png");
         LaserTower.loadImages("turret.png","base.png");
         CannonTower.loadImages("turret.png","base.png");
+        FreezeTower.loadImage("base.png");
         Bullet.loadImage("bullet.png");
         Enemy.loadImage("germ.png");
+        FastEnemy.loadImage("ameoba");
+        ArmoredEnemy.loadImages("egg");
         Player.init(towerList);   
     }
     

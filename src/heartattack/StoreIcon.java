@@ -40,6 +40,11 @@ public class StoreIcon extends Sprite {
     public void render(Graphics g) 
     {
         super.render(g);
+        
+    }
+    //For rendering the tooltips AFTER everything else
+    public void postRender(Graphics g)
+    {
         if (this.boundingBox().intersects(InputController.msPosition))
         {
             tooltip(g);

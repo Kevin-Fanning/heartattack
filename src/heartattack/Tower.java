@@ -15,7 +15,6 @@ public abstract class Tower extends Sprite{
     protected float fireRate;   //How fast the tower fires
     protected int damage;     //The damage to apply on a hit
     
-    protected static int plasmaCost = 0;   //How much the tower costs
     protected int redCost = 0;
     protected int whiteCost = 0;
     protected int sellBack = 0;
@@ -48,9 +47,6 @@ public abstract class Tower extends Sprite{
     
     //fire the weapon
     public abstract void fire();
-    
-    //Get rid of the tower
-    public abstract void sell();
     
     //Use this to grab bullets for collision detection
     public abstract ArrayDeque<Bullet> getBullets();

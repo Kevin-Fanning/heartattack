@@ -13,6 +13,8 @@ import org.newdawn.slick.Graphics;
  * @author Kevin
  */
 public class CannonTower extends Tower {
+    public static int plasmaCost;
+    
     protected static Image turret;
     protected static Image base;
     protected Image ownTurret;
@@ -55,7 +57,7 @@ public class CannonTower extends Tower {
         float minDistance = range*range;
         for (Enemy e: enemyList)
         {
-            float curDistance = position.getSquareDistance(e.position);
+            float curDistance = new Vector2(position.x+width/2, position.y+height/2).getSquareDistance(e.position);
             if (curDistance < minDistance)
             {
                 target = e;
@@ -117,12 +119,6 @@ public class CannonTower extends Tower {
         }
     }
     
-    //Get rid of the tower
-    @Override
-    public void sell()
-    {
-        //TODO: sell the tower
-    }
 
     //Initialize the tower with 2 images. a turret and a base
     public static void loadImages(String turretPath,String basePath) throws SlickException
@@ -152,6 +148,7 @@ public class CannonTower extends Tower {
     {
         if (selected)
         {
+            g.setAntiAlias(false);
             g.setColor(new Color(0,200,0,80));
             g.fillOval(position.x-range + width/2, position.y-range + height/2, range*2, range*2);
         }
