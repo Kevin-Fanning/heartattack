@@ -24,7 +24,7 @@ public class MainGameState extends BasicGameState{
     
     
     private Sound ekg;
-    private Music bgMusic;
+   // private Music bgMusic;
     
     private boolean justLost;
     
@@ -47,7 +47,7 @@ public class MainGameState extends BasicGameState{
     {
         ekg = new Sound("heartBeat.wav");
 
-        bgMusic = new Music("Controlled Chaos.ogg");
+       // bgMusic = new Music("Controlled Chaos.ogg");
 
         
         justLost = false;
@@ -85,7 +85,7 @@ public class MainGameState extends BasicGameState{
         }
         if (Player.redBlood <= 0 && !ekg.playing() && justLost == false)
         {
-            bgMusic.fade(3000, 0, true);
+            //bgMusic.fade(3000, 0, true);
             ekg.play();
             justLost = true;
         }
@@ -145,8 +145,8 @@ public class MainGameState extends BasicGameState{
     public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException
     {
         init(gc, sbg);
-        if (!bgMusic.playing()) {
-            bgMusic.play();
-        }
+//        if (!bgMusic.playing()) {
+//            bgMusic.play();
+//        }
     }
 }
